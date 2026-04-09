@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { useRouterState, useNavigate } from "@tanstack/react-router";
 import { useColorMode } from "../color-mode";
 import { CodeBlock } from "./CodeBlock";
+import { currentVersion } from "../data/versions";
 
 const validSections = [
   "installation",
@@ -60,7 +61,7 @@ export function GetStarted({ section }: { section: string }) {
                   Get Started
                 </Heading>
                 <Badge colorPalette="brand" variant="subtle" fontSize="xs">
-                  v1.0.0
+                  v{currentVersion.version}
                 </Badge>
               </HStack>
               <Text color={mutedColor} fontSize="lg">

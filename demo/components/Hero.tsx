@@ -13,6 +13,7 @@ import { useColorMode } from '../color-mode'
 import { ArrowRight, ExternalLink } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import { InlineCodeCopy } from './CodeBlock'
+import { currentVersion } from '../data/versions'
 
 export function Hero() {
   const { colorMode } = useColorMode()
@@ -39,7 +40,7 @@ export function Hero() {
             fontSize="sm"
             fontWeight="600"
           >
-            v1.0.0
+            v{currentVersion.version}
           </Badge>
 
           <VStack gap="4">

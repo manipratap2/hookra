@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { ExternalLink } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
+import { currentVersion } from '../data/versions'
 
 export function Footer() {
   return (
@@ -29,7 +30,7 @@ export function Footer() {
               JSON-driven form builder for React.<br />
               Built on React Hook Form + Chakra UI.
             </Text>
-            <Text fontSize="xs" color="gray.400" fontFamily="mono">v1.0.0</Text>
+            <Text fontSize="xs" color="gray.400" fontFamily="mono">v{currentVersion.version}</Text>
           </VStack>
 
           <VStack align="flex-start" gap="3">
@@ -79,7 +80,7 @@ export function Footer() {
           <HStack justify="space-between" flexWrap="wrap" gap="4">
             <Text fontSize="sm" color="gray.400">MIT License. Built with care.</Text>
             <Text fontSize="xs" color="gray.400" fontFamily="mono">
-              hookra@1.0.0
+              hookra@{currentVersion.version}
             </Text>
           </HStack>
         </Box>

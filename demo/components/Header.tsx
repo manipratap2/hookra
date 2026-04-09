@@ -14,6 +14,7 @@ import { Moon, Sun, Menu } from 'lucide-react'
 import { useColorMode } from '../color-mode'
 import { Link, useRouterState } from '@tanstack/react-router'
 import { useState } from 'react'
+import { currentVersion } from '../data/versions'
 
 const navItems = [
   { to: '/' as const, label: 'Home', match: '/' },
@@ -62,7 +63,7 @@ export function Header() {
                     Hookra
                   </Text>
                   <Badge colorPalette="gray" variant="subtle" fontSize="2xs" fontFamily="mono">
-                    v1.0.0
+                    v{currentVersion.version}
                   </Badge>
                 </HStack>
               </Link>

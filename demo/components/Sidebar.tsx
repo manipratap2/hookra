@@ -2,6 +2,7 @@ import { Box, Text, VStack, Badge } from '@chakra-ui/react'
 import { useColorMode } from '../color-mode'
 import { Link, useRouterState } from '@tanstack/react-router'
 import { exampleCategories } from '../data/examples'
+import { currentVersion } from '../data/versions'
 
 interface NavItem {
   id: string
@@ -105,7 +106,7 @@ export function Sidebar() {
       <VStack gap="6" align="stretch">
         <Box px="3" pb="2" borderBottom="1px solid" borderColor={borderColor}>
           <Text fontSize="xs" color={groupColor} fontFamily="mono">
-            v1.0.0
+            v{currentVersion.version}
           </Text>
         </Box>
 

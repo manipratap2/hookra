@@ -73,7 +73,7 @@ export function Hero() {
           </VStack>
 
           <Box w={{ base: '100%', sm: '420px' }}>
-            <InlineCodeCopy code="npm install formora" prefix="$" />
+            <InlineCodeCopy code="npm install hookra" prefix="$" />
           </Box>
 
           <HStack gap="4">

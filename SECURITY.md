@@ -8,7 +8,7 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in Formora, please report it responsibly.
+If you discover a security vulnerability in Hookra, please report it responsibly.
 
 **Do not open a public GitHub issue for security vulnerabilities.**
 
@@ -28,4 +28,4 @@ You should receive a response within **48 hours**. We will work with you to unde
 - We will notify you when the vulnerability is fixed.
 - We will credit you in the release notes (unless you prefer to remain anonymous).
 
-Thank you for helping keep Formora and its users safe.
+Thank you for helping keep Hookra and its users safe.

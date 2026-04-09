@@ -14,7 +14,7 @@ import { useColorMode } from "../color-mode";
 import { Check, Eye, Code2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useMemo } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { FormBuilder } from "formora";
+import { FormBuilder } from "hookra";
 import { CodeBlock } from "./CodeBlock";
 import { toaster } from "../toaster";
 import {
@@ -314,7 +314,7 @@ export function Examples({ section }: ExamplesProps) {
               </Heading>
               <Text color={mutedColor} fontSize="lg">
                 {allExamples.length} interactive examples showcasing the full
-                capabilities of Formora. Click any card to see the live
+                capabilities of Hookra. Click any card to see the live
                 demo.
               </Text>
             </VStack>

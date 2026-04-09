@@ -64,7 +64,7 @@ export function GetStarted({ section }: { section: string }) {
                 </Badge>
               </HStack>
               <Text color={mutedColor} fontSize="lg">
-                Get up and running with Formora in under 5 minutes.
+                Get up and running with Hookra in under 5 minutes.
               </Text>
             </VStack>
 
@@ -73,7 +73,7 @@ export function GetStarted({ section }: { section: string }) {
                 Prerequisites
               </Heading>
               <Text color={mutedColor} mb="3">
-                Formora requires the following peer dependencies:
+                Hookra requires the following peer dependencies:
               </Text>
               <Box
                 bg={cardBg}
@@ -118,7 +118,7 @@ export function GetStarted({ section }: { section: string }) {
               </HStack>
 
               <Text color={mutedColor} mb="4">
-                Install <Code>formora</Code> and its peer dependencies:
+                Install <Code>hookra</Code> and its peer dependencies:
               </Text>
 
               <Tabs.Root
@@ -134,21 +134,21 @@ export function GetStarted({ section }: { section: string }) {
                 </Tabs.List>
                 <Tabs.Content value="npm" px="0">
                   <CodeBlock
-                    code="npm install formora"
+                    code="npm install hookra"
                     language="bash"
                     filename="Terminal"
                   />
                 </Tabs.Content>
                 <Tabs.Content value="yarn" px="0">
                   <CodeBlock
-                    code="yarn add formora"
+                    code="yarn add hookra"
                     language="bash"
                     filename="Terminal"
                   />
                 </Tabs.Content>
                 <Tabs.Content value="pnpm" px="0">
                   <CodeBlock
-                    code="pnpm add formora"
+                    code="pnpm add hookra"
                     language="bash"
                     filename="Terminal"
                   />
@@ -186,7 +186,7 @@ export function GetStarted({ section }: { section: string }) {
 
             <CodeBlock
               code={`import { ChakraProvider, defaultSystem } from '@chakra-ui/react'
-import { FormBuilder } from 'formora'
+import { FormBuilder } from 'hookra'
 
 function App() {
   return (
@@ -230,7 +230,7 @@ function App() {
               </Text>
 
               <CodeBlock
-                code={`import type { FormSchema } from 'formora'
+                code={`import type { FormSchema } from 'hookra'
 
 const contactSchema: FormSchema = {
   title: 'Contact Us',
@@ -308,7 +308,7 @@ const contactSchema: FormSchema = {
               </Text>
 
               <CodeBlock
-                code={`import { FormBuilder } from 'formora'
+                code={`import { FormBuilder } from 'hookra'
 import { contactSchema } from './schema'
 
 function ContactPage() {
@@ -448,8 +448,8 @@ const schema: FormSchema = {
               </Text>
 
               <CodeBlock
-                code={`import { FormBuilder, createRegistry, defaultRegistry } from 'formora'
-import type { FieldComponentProps } from 'formora'
+                code={`import { FormBuilder, createRegistry, defaultRegistry } from 'hookra'
+import type { FieldComponentProps } from 'hookra'
 
 // 1. Create your custom component
 function RichTextEditor({ field, fieldSchema }: FieldComponentProps) {

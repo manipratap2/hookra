@@ -21,9 +21,9 @@ export function Footer() {
                 w="7" h="7" borderRadius="md" bg="brand.500"
                 display="flex" alignItems="center" justifyContent="center"
               >
-                <Text fontSize="md" fontWeight="bold" color="white" lineHeight="1">F</Text>
+                <Text fontSize="md" fontWeight="bold" color="white" lineHeight="1">H</Text>
               </Box>
-              <Text fontWeight="700" color="gray.100">Formora</Text>
+              <Text fontWeight="700" color="gray.100">Hookra</Text>
             </HStack>
             <Text fontSize="sm" color="gray.400" lineHeight="tall">
               JSON-driven form builder for React.<br />
@@ -51,10 +51,10 @@ export function Footer() {
             <Heading size="xs" color="gray.100" textTransform="uppercase" letterSpacing="wider">
               Community
             </Heading>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--chakra-colors-gray-300)', fontSize: '14px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <a href="https://github.com/manipratap2/formora" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--chakra-colors-gray-300)', fontSize: '14px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
               GitHub <ExternalLink size={12} />
             </a>
-            <a href="https://www.npmjs.com/package/formora" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--chakra-colors-gray-300)', fontSize: '14px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <a href="https://www.npmjs.com/package/hookra" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--chakra-colors-gray-300)', fontSize: '14px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
               npm <ExternalLink size={12} />
             </a>
           </VStack>
@@ -79,7 +79,7 @@ export function Footer() {
           <HStack justify="space-between" flexWrap="wrap" gap="4">
             <Text fontSize="sm" color="gray.400">MIT License. Built with care.</Text>
             <Text fontSize="xs" color="gray.400" fontFamily="mono">
-              formora@1.0.0
+              hookra@1.0.0
             </Text>
           </HStack>
         </Box>

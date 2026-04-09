@@ -1,4 +1,4 @@
-import type { FormSchema } from 'formora'
+import type { FormSchema } from 'hookra'
 
 // ─── Schema imports ──────────────────────────────────────────────────────────
 import { simpleSchema } from '../schemas/simpleSchema'

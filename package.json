@@ -1,0 +1,81 @@
+{
+  "name": "hookra",
+  "version": "1.0.3",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "description": "Build dynamic, type-safe React forms from JSON schemas. 17+ field types, conditional logic, nested structures, validation — zero boilerplate. Powered by React Hook Form + Chakra UI.",
+  "keywords": [
+    "react",
+    "form",
+    "form-builder",
+    "form-generator",
+    "react-hook-form",
+    "chakra-ui",
+    "json-schema",
+    "json-form",
+    "dynamic-form",
+    "typescript",
+    "schema-form",
+    "declarative-form",
+    "hookra"
+  ],
+  "homepage": "https://github.com/manipratap2/hookra#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manipratap2/hookra.git"
+  },
+  "bugs": {
+    "url": "https://github.com/manipratap2/hookra/issues"
+  },
+  "license": "MIT",
+  "sideEffects": false,
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && tsc --project tsconfig.lib.json",
+    "build:lib": "vite build && tsc --project tsconfig.lib.json",
+    "build:demo": "vite build --config vite.config.demo.ts",
+    "lint": "eslint src/ --max-warnings 0",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "release": "node -e \"const v=require('./package.json').version; const {execSync}=require('child_process'); execSync('git tag v'+v, {stdio:'inherit'}); execSync('git push origin v'+v, {stdio:'inherit'}); console.log('Tagged and pushed v'+v);\""
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "@chakra-ui/react": ">=3",
+    "@emotion/react": ">=11",
+    "react-hook-form": ">=7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@tanstack/react-router": "1.168.10",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.1",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "lucide-react": "1.7.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "typescript": "6.0.2",
+    "typescript-eslint": "^8.58.1",
+    "vite": "8.0.7",
+    "vite-plugin-dts": "4.5.4"
+  }
+}

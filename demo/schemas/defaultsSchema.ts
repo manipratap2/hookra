@@ -1,0 +1,97 @@
+import type { FormSchema } from 'formora'
+
+export const defaultsSchema: FormSchema = {
+  title: 'Default Values',
+  description: 'Every field pre-populated with a default value.',
+  showReset: true,
+  layout: { columns: 2 },
+  fields: [
+    {
+      name: 'name',
+      type: 'text',
+      label: 'Full Name',
+      defaultValue: 'Jane Doe',
+    },
+    {
+      name: 'email',
+      type: 'email',
+      label: 'Email',
+      defaultValue: 'jane@example.com',
+    },
+    {
+      name: 'age',
+      type: 'number',
+      label: 'Age',
+      defaultValue: 28,
+    },
+    {
+      name: 'website',
+      type: 'url',
+      label: 'Website',
+      defaultValue: 'https://example.com',
+      prefix: 'https://',
+    },
+    {
+      name: 'role',
+      type: 'select',
+      label: 'Role',
+      defaultValue: 'engineer',
+      options: [
+        { value: 'engineer', label: 'Engineer' },
+        { value: 'designer', label: 'Designer' },
+        { value: 'manager', label: 'Manager' },
+        { value: 'other', label: 'Other' },
+      ],
+    },
+    {
+      name: 'level',
+      type: 'radio',
+      label: 'Experience Level',
+      defaultValue: 'mid',
+      direction: 'row',
+      options: [
+        { value: 'junior', label: 'Junior' },
+        { value: 'mid', label: 'Mid' },
+        { value: 'senior', label: 'Senior' },
+      ],
+    },
+    {
+      name: 'newsletter',
+      type: 'boolean',
+      label: 'Newsletter',
+      checkboxLabel: 'Subscribe to updates',
+      defaultValue: true,
+    },
+    {
+      name: 'color',
+      type: 'color',
+      label: 'Favourite Colour',
+      defaultValue: '#6B46C1',
+    },
+    {
+      name: 'rating',
+      type: 'slider',
+      label: 'Satisfaction (0-100)',
+      min: 0,
+      max: 100,
+      step: 5,
+      showValue: true,
+      defaultValue: 75,
+      width: 'full',
+    },
+    {
+      name: 'startDate',
+      type: 'date',
+      label: 'Start Date',
+      defaultValue: '2026-01-15',
+    },
+    {
+      name: 'notes',
+      type: 'textarea',
+      label: 'Notes',
+      defaultValue: 'This form demonstrates default values for every field type.',
+      rows: 2,
+      width: 'full',
+    },
+  ],
+}

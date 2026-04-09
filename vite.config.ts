@@ -1,17 +1,10 @@
 import { resolve } from 'path'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
-import dts from 'vite-plugin-dts'
 
 export default defineConfig({
   plugins: [
     react(),
-    dts({
-      tsconfigPath: './tsconfig.app.json',
-      include: ['src'],
-      rollupTypes: true,
-      insertTypesEntry: true,
-    }),
   ],
 
   resolve: {
@@ -48,6 +41,6 @@ export default defineConfig({
       },
     },
     sourcemap: true,
-    minify: false,
+    minify: true,
   },
 })

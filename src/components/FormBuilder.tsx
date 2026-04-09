@@ -45,6 +45,7 @@ export interface FormBuilderProps {
   mode?: 'onBlur' | 'onChange' | 'onSubmit' | 'onTouched' | 'all'
   submitButton?: React.ReactNode
   cancelButton?: React.ReactNode
+  onlyDirty?: boolean
 }
 
 // ─── Section renderer ─────────────────────────────────────────────────────────
@@ -129,6 +130,7 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
       mode = 'onBlur',
       submitButton,
       cancelButton,
+      onlyDirty = false,
     },
     ref,
   ) {
@@ -140,6 +142,17 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
       mode,
     })
 
+    const submitHandler = (data: Record<string, unknown>) => {
+      if (onlyDirty) {
+        const dirtyFields = form.formState.dirtyFields
+        const changedData = Object.fromEntries(
+          Object.keys(dirtyFields).map((key) => [key, data[key]])
+        )
+        return (onSubmit as (data: Record<string, unknown>) => void)(changedData)
+      }
+      return (onSubmit as (data: Record<string, unknown>) => void)(data)
+    }
+
     useEffect(() => {
       const newDefaults = { ...buildDefaultValues(schema), ...externalDefaults }
       form.reset(newDefaults)
@@ -148,7 +161,7 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
 
     useImperativeHandle(ref, () => ({
       form,
-      submit: form.handleSubmit(onSubmit as SubmitHandler<Record<string, unknown>>),
+      submit: form.handleSubmit(submitHandler as SubmitHandler<Record<string, unknown>>),
       reset: () => form.reset(mergedDefaults),
     }))
 
@@ -160,7 +173,7 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
       <FormBuilderContext.Provider value={{ form, schema, registry, readOnly }}>
         <FormProvider {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit as SubmitHandler<Record<string, unknown>>)}
+            onSubmit={form.handleSubmit(submitHandler as SubmitHandler<Record<string, unknown>>)}
             noValidate
           >
             <VStack gap="6" align="stretch">

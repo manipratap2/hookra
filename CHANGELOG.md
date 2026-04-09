@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-04-09
+
+### Added
+
+- `onlyDirty` prop on `FormBuilder` — when `true`, the `onSubmit` callback receives only the fields the user has actually changed, not the full form payload. Useful for PATCH-style API calls where sending unchanged fields is undesirable.
+
+### Changed
+
+- No breaking changes. Fully backwards-compatible with v1.0.0.
+
+---
+
 ## [1.0.0] - 2026-04-09
 
 ### Added

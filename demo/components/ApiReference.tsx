@@ -393,7 +393,7 @@ export function ApiReference({ section }: { section: string }) {
               </Text>
 
               <CodeBlock
-                code={`import { FormBuilder } from 'formora'
+                code={`import { FormBuilder } from 'hookra'
 
 <FormBuilder
   schema={mySchema}
@@ -751,7 +751,7 @@ type ConditionOperator =
               override built-in ones.
             </Text>
             <CodeBlock
-              code={`import { createRegistry, defaultRegistry } from 'formora'
+              code={`import { createRegistry, defaultRegistry } from 'hookra'
 
 const registry = createRegistry(defaultRegistry, {
   'my-datepicker': MyDatePicker,

@@ -1,4 +1,4 @@
-import type { FormSchema } from 'formora'
+import type { FormSchema } from 'hookra'
 
 export const readOnlySchema: FormSchema = {
   title: 'Read-Only & Disabled Fields',

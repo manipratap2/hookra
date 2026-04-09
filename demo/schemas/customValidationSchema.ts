@@ -1,4 +1,4 @@
-import type { FormSchema } from 'formora'
+import type { FormSchema } from 'hookra'
 
 export const customValidationSchema: FormSchema = {
   title: 'Custom Validation',

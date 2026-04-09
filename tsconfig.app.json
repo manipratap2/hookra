@@ -22,7 +22,7 @@
     "declaration": true,
     "declarationMap": true,
     "paths": {
-      "formora": ["./src/index.ts"]
+      "hookra": ["./src/index.ts"]
     }
   },
   "include": ["src", "demo"]

@@ -1,17 +1,17 @@
-# Formora
+# Hookra
 
 > JSON-driven form builder on top of **React Hook Form** + **Chakra UI**.  
 > Better DX than RJSF. Type-safe. Tree-shakable. Zero config.
 
 ```bash
-npm install formora
+npm install hookra
 ```
 
 ## Quick start
 
 ```tsx
-import { FormBuilder } from 'formora'
-import type { FormSchema } from 'formora'
+import { FormBuilder } from 'hookra'
+import type { FormSchema } from 'hookra'
 
 const schema: FormSchema = {
   title: 'Contact Us',
@@ -242,7 +242,7 @@ Set `layout.columns` on the form, then override per-field with `width`:
 
 ```tsx
 import { useRef } from 'react'
-import { FormBuilder, type FormBuilderRef } from 'formora'
+import { FormBuilder, type FormBuilderRef } from 'hookra'
 
 const ref = useRef<FormBuilderRef>(null)
 
@@ -258,7 +258,7 @@ ref.current?.form.watch('country')
 ## Custom field components
 
 ```tsx
-import { FormBuilder, createRegistry, defaultRegistry } from 'formora'
+import { FormBuilder, createRegistry, defaultRegistry } from 'hookra'
 
 function StarRating({ field, name }) {
   const { control } = useFormContext()
@@ -284,7 +284,7 @@ The package is marked `"sideEffects": false`. If you only use a subset of field 
 You can also use individual field components directly:
 
 ```tsx
-import { TextField, SelectField } from 'formora'
+import { TextField, SelectField } from 'hookra'
 ```
 
 ## Peer dependencies

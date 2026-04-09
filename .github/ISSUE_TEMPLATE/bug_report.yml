@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug in Formora
+description: Report a bug in Hookra
 title: "[Bug]: "
 labels: ["bug"]
 body:
@@ -54,7 +54,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: Formora Version
+      label: Hookra Version
       placeholder: "1.0.0"
     validations:
       required: true

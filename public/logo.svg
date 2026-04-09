@@ -14,34 +14,39 @@
   <rect width="512" height="512" rx="112" fill="url(#bg)"/>
   <rect width="512" height="512" rx="112" fill="url(#shine)"/>
 
-  <!-- Form document shape (subtle, behind the F) -->
+  <!-- Form document shape (subtle, behind the H) -->
   <rect x="140" y="88" width="260" height="336" rx="24" fill="white" opacity="0.12"/>
   <!-- Form lines (representing form fields) -->
   <rect x="180" y="300" width="140" height="12" rx="6" fill="white" opacity="0.18"/>
   <rect x="180" y="330" width="100" height="12" rx="6" fill="white" opacity="0.14"/>
   <rect x="180" y="360" width="120" height="12" rx="6" fill="white" opacity="0.10"/>
 
-  <!-- Stylized F letterform -->
+  <!-- Stylized H letterform -->
   <path d="
-    M 180 136
+    M 172 136
+    L 196 136
+    Q 208 136 208 148
+    L 208 232
+    L 304 232
+    L 304 148
+    Q 304 136 316 136
     L 340 136
     Q 352 136 352 148
-    L 352 168
-    Q 352 180 340 180
-    L 228 180
-    L 228 232
-    L 310 232
-    Q 322 232 322 244
-    L 322 264
-    Q 322 276 310 276
-    L 228 276
-    L 228 380
-    Q 228 396 212 396
-    L 196 396
-    Q 180 396 180 380
+    L 352 384
+    Q 352 396 340 396
+    L 316 396
+    Q 304 396 304 384
+    L 304 276
+    L 208 276
+    L 208 384
+    Q 208 396 196 396
+    L 172 396
+    Q 160 396 160 384
+    L 160 148
+    Q 160 136 172 136
     Z
   " fill="white"/>
 
-  <!-- Accent dot (the "a" in Formora, like a cursor/active state) -->
-  <circle cx="360" cy="372" r="22" fill="#FBBF24"/>
+  <!-- Accent dot (hook cursor) -->
+  <circle cx="392" cy="136" r="22" fill="#FBBF24"/>
 </svg>

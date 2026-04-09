@@ -1,6 +1,6 @@
-# Contributing to Formora
+# Contributing to Hookra
 
-Thank you for your interest in contributing to Formora! This guide will help you get started.
+Thank you for your interest in contributing to Hookra! This guide will help you get started.
 
 ## Code of Conduct
 
@@ -10,7 +10,7 @@ By participating in this project, you agree to abide by our [Code of Conduct](CO
 
 ### Reporting Bugs
 
-Before creating a bug report, please check the [existing issues](https://github.com/manipratap2/formora/issues) to avoid duplicates.
+Before creating a bug report, please check the [existing issues](https://github.com/manipratap2/hookra/issues) to avoid duplicates.
 
 When filing a bug report, include:
 
@@ -56,8 +56,8 @@ chore: update dependencies
 
 ```bash
 # Clone your fork
-git clone https://github.com/<your-username>/formora.git
-cd formora
+git clone https://github.com/<your-username>/hookra.git
+cd hookra
 
 # Install dependencies
 npm install

@@ -56,10 +56,10 @@ export function Header() {
                     w="8" h="8" borderRadius="lg" bg="brand.500"
                     display="flex" alignItems="center" justifyContent="center"
                   >
-                    <Text fontSize="lg" fontWeight="bold" color="white" lineHeight="1">F</Text>
+                    <Text fontSize="lg" fontWeight="bold" color="white" lineHeight="1">H</Text>
                   </Box>
                   <Text fontWeight="700" fontSize="lg" letterSpacing="-0.02em">
-                    Formora
+                    Hookra
                   </Text>
                   <Badge colorPalette="gray" variant="subtle" fontSize="2xs" fontFamily="mono">
                     v1.0.0
@@ -99,7 +99,7 @@ export function Header() {
                 display={{ base: 'none', sm: 'flex' }}
                 asChild
               >
-                <a href="https://www.npmjs.com/package/formora" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.npmjs.com/package/hookra" target="_blank" rel="noopener noreferrer">
                   npm
                 </a>
               </Badge>

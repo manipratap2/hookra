@@ -51,7 +51,8 @@
     "build:demo": "vite build --config vite.config.demo.ts",
     "lint": "eslint src/ --max-warnings 0",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "release": "node -e \"const v=require('./package.json').version; const {execSync}=require('child_process'); execSync('git tag v'+v, {stdio:'inherit'}); execSync('git push origin v'+v, {stdio:'inherit'}); console.log('Tagged and pushed v'+v);\""
   },
   "dependencies": {},
   "peerDependencies": {

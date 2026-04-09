@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import { useRouterState, useNavigate } from "@tanstack/react-router";
 import { useColorMode } from "../color-mode";
 import { CodeBlock } from "./CodeBlock";
+import { currentVersion } from "../data/versions";
 
 interface PropRowData {
   name: string;
@@ -375,7 +376,7 @@ export function ApiReference({ section }: { section: string }) {
                   API Reference
                 </Heading>
                 <Badge colorPalette="brand" variant="subtle" fontSize="xs">
-                  v1.0.0
+                  v{currentVersion.version}
                 </Badge>
               </HStack>
               <Text color={mutedColor} fontSize="lg">

@@ -8,9 +8,21 @@ export interface VersionInfo {
 
 export const versions: VersionInfo[] = [
   {
-    version: '1.0.0',
+    version: '1.0.1',
     date: '2026-04-09',
     label: 'Latest',
+    features: [
+      'onlyDirty prop — submit only changed fields for PATCH-style APIs',
+    ],
+    changelog: [
+      'Added onlyDirty prop to FormBuilder',
+      'When true, onSubmit receives only fields the user changed (dirty fields)',
+      'Useful for PATCH-style API calls — no more manual diffing',
+    ],
+  },
+  {
+    version: '1.0.0',
+    date: '2026-04-09',
     features: [
       '17+ field types including text, number, select, radio, checkbox, date, file, slider, color',
       'Chakra UI v3 support with modern compound component API',

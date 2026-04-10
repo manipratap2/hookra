@@ -2,6 +2,7 @@ import { Stack, Text, Checkbox } from '@chakra-ui/react'
 import { Controller, useFormContext } from 'react-hook-form'
 import type { MultiSelectFieldSchema } from '../../types/schema'
 import { buildValidationRules } from '../../logic/buildValidationRules'
+import { useResolvedOptions } from '../../logic/useResolvedOptions'
 
 interface Props {
   field: MultiSelectFieldSchema
@@ -12,6 +13,7 @@ interface Props {
 export function MultiSelectField({ field, name, readOnly }: Props) {
   const { control } = useFormContext()
   const rules = buildValidationRules(field)
+  const options = useResolvedOptions(field.options, field.optionsFrom)
 
   const validatedRules = {
     ...rules,
@@ -51,7 +53,7 @@ export function MultiSelectField({ field, name, readOnly }: Props) {
 
         return (
           <Stack gap="2">
-            {field.options.map((opt) => (
+            {options.map((opt) => (
               <Checkbox.Root
                 key={String(opt.value)}
                 checked={selected.includes(String(opt.value))}

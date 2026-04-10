@@ -2,6 +2,7 @@ import { Stack, Text, Checkbox } from '@chakra-ui/react'
 import { Controller, useFormContext } from 'react-hook-form'
 import type { CheckboxGroupFieldSchema } from '../../types/schema'
 import { buildValidationRules } from '../../logic/buildValidationRules'
+import { useResolvedOptions } from '../../logic/useResolvedOptions'
 
 interface Props {
   field: CheckboxGroupFieldSchema
@@ -12,6 +13,7 @@ interface Props {
 export function CheckboxGroupField({ field, name, readOnly }: Props) {
   const { control } = useFormContext()
   const rules = buildValidationRules(field)
+  const options = useResolvedOptions(field.options, field.optionsFrom)
 
   return (
     <Controller
@@ -32,7 +34,7 @@ export function CheckboxGroupField({ field, name, readOnly }: Props) {
 
         return (
           <Stack direction={field.direction ?? 'column'} gap="2" flexWrap="wrap">
-            {field.options.map((opt) => (
+            {options.map((opt) => (
               <Checkbox.Root
                 key={String(opt.value)}
                 checked={selected.includes(String(opt.value))}

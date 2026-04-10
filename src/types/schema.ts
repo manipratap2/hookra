@@ -67,6 +67,20 @@ export interface FieldOption {
   description?: string
 }
 
+/**
+ * Drive a field's options from another field's value.
+ * When the source field's value matches a key in `map`, those options are used.
+ * Falls back to `default` (or an empty list) when no key matches.
+ */
+export interface OptionsFrom {
+  /** Absolute field path from the form root, e.g. "address.country" */
+  field: string
+  /** Map of source-field value → options to show */
+  map: Record<string, FieldOption[]>
+  /** Options shown when no key in map matches (defaults to []) */
+  default?: FieldOption[]
+}
+
 // ─── Validation ───────────────────────────────────────────────────────────────
 
 /**
@@ -162,28 +176,36 @@ export interface TextareaFieldSchema extends BaseField {
 
 export interface SelectFieldSchema extends BaseField {
   type: 'select'
-  options: FieldOption[]
+  options?: FieldOption[]
+  /** Drive options dynamically from another field's value */
+  optionsFrom?: OptionsFrom
   /** Label for the blank/placeholder option (default "Select…") */
   placeholder?: string
 }
 
 export interface MultiSelectFieldSchema extends BaseField {
   type: 'multiselect'
-  options: FieldOption[]
+  options?: FieldOption[]
+  /** Drive options dynamically from another field's value */
+  optionsFrom?: OptionsFrom
   min?: number
   max?: number
 }
 
 export interface RadioFieldSchema extends BaseField {
   type: 'radio'
-  options: FieldOption[]
+  options?: FieldOption[]
+  /** Drive options dynamically from another field's value */
+  optionsFrom?: OptionsFrom
   /** Stack direction (default "column") */
   direction?: 'row' | 'column'
 }
 
 export interface CheckboxGroupFieldSchema extends BaseField {
   type: 'checkboxgroup'
-  options: FieldOption[]
+  options?: FieldOption[]
+  /** Drive options dynamically from another field's value */
+  optionsFrom?: OptionsFrom
   direction?: 'row' | 'column'
 }
 

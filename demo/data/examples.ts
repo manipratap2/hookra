@@ -19,6 +19,7 @@ import { customValidationSchema } from '../schemas/customValidationSchema'
 import { errorMessagesSchema } from '../schemas/errorMessagesSchema'
 import { dependenciesSchema } from '../schemas/dependenciesSchema'
 import { compoundConditionsSchema } from '../schemas/compoundConditionsSchema'
+import { dynamicOptionsSchema } from '../schemas/dynamicOptionsSchema'
 import { simpleArraysSchema } from '../schemas/simpleArraysSchema'
 import { objectArraysSchema } from '../schemas/objectArraysSchema'
 import { nestedObjectsSchema } from '../schemas/nestedObjectsSchema'
@@ -29,6 +30,7 @@ import { surveySchema } from '../schemas/surveySchema'
 import { settingsSchema } from '../schemas/settingsSchema'
 import { contactSchema } from '../schemas/contactSchema'
 import { largeFormSchema } from '../schemas/largeFormSchema'
+import { onlyDirtySchema } from '../schemas/onlyDirtySchema'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -41,6 +43,8 @@ export interface ExampleDef {
   schema: FormSchema
   /** If true, the FormBuilder is rendered with readOnly prop */
   readOnly?: boolean
+  /** If true, the FormBuilder is rendered with onlyDirty prop */
+  onlyDirty?: boolean
 }
 
 export interface ExampleCategory {
@@ -92,6 +96,15 @@ export const allExamples: ExampleDef[] = [
     description: 'Fields in readOnly and disabled states — useful for view-only profiles, locked fields, etc.',
     features: ['readOnly', 'disabled', 'Mixed states'],
     schema: readOnlySchema,
+  },
+  {
+    id: 'only-dirty',
+    title: 'Only Dirty Fields',
+    category: 'Basics',
+    description: 'A pre-filled form where only changed fields are included in the submitted payload — ideal for PATCH API calls.',
+    features: ['onlyDirty', 'Default values', 'Partial submit', 'PATCH pattern'],
+    schema: onlyDirtySchema,
+    onlyDirty: true,
   },
 
   // ── Field Types ────────────────────────────────────────────────────────────
@@ -204,6 +217,14 @@ export const allExamples: ExampleDef[] = [
     description: 'Advanced conditional logic: AND (all), OR (any), NOT (not), comparison operators (gte, contains, in, empty).',
     features: ['all (AND)', 'any (OR)', 'not (NOT)', 'gte', 'contains', 'endsWith', 'in/nin', 'empty/notEmpty', 'Conditional sections'],
     schema: compoundConditionsSchema,
+  },
+  {
+    id: 'dynamic-options',
+    title: 'Dynamic Options',
+    category: 'Conditional',
+    description: 'The choices available in a field change based on the value of another field using optionsFrom — country/state, category/sub-category, role/permissions.',
+    features: ['optionsFrom', 'Dynamic select', 'Dynamic radio', 'Dynamic checkboxgroup', 'Combined with dependsOn'],
+    schema: dynamicOptionsSchema,
   },
 
   // ── Dynamic Data ───────────────────────────────────────────────────────────

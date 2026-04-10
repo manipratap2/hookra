@@ -41,6 +41,7 @@ export type {
 
   // Options
   FieldOption,
+  OptionsFrom,
 
   // Conditions
   Condition,
@@ -67,6 +68,7 @@ export { evaluateCondition } from './logic/evaluateCondition'
 export { evaluateOperator } from './logic/evaluateOperator'
 export { buildDefaultValues } from './logic/buildDefaultValues'
 export { buildValidationRules } from './logic/buildValidationRules'
+export { useResolvedOptions } from './logic/useResolvedOptions'
 
 // ─── Context ──────────────────────────────────────────────────────────────────
 export { useFormBuilderContext } from './context/FormBuilderContext'

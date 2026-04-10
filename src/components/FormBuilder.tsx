@@ -234,6 +234,7 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
                   {schema.showReset && (
                     <Button
                       variant="outline"
+                      disabled={form.formState.isSubmitting}
                       onClick={() => form.reset(mergedDefaults)}
                     >
                       {schema.resetLabel ?? 'Reset'}
@@ -244,7 +245,7 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
                     cancelButton !== undefined ? (
                       cancelButton
                     ) : (
-                      <Button variant="ghost" onClick={onCancel}>
+                      <Button variant="ghost" disabled={form.formState.isSubmitting} onClick={onCancel}>
                         Cancel
                       </Button>
                     )

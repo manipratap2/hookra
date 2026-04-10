@@ -164,6 +164,7 @@ function ExampleDemo({ example }: { example: ExampleDef }) {
               <FormBuilder
                 schema={example.schema}
                 readOnly={example.readOnly}
+                onlyDirty={example.onlyDirty}
                 onSubmit={(data) => {
                   setLastSubmit(data);
                   toaster.create({

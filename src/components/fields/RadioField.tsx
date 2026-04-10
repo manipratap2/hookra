@@ -2,6 +2,7 @@ import { RadioGroup, HStack, VStack, Text } from '@chakra-ui/react'
 import { Controller, useFormContext } from 'react-hook-form'
 import type { RadioFieldSchema } from '../../types/schema'
 import { buildValidationRules } from '../../logic/buildValidationRules'
+import { useResolvedOptions } from '../../logic/useResolvedOptions'
 
 interface Props {
   field: RadioFieldSchema
@@ -12,6 +13,7 @@ interface Props {
 export function RadioField({ field, name, readOnly }: Props) {
   const { control } = useFormContext()
   const rules = buildValidationRules(field)
+  const options = useResolvedOptions(field.options, field.optionsFrom)
 
   const Wrapper = field.direction === 'row' ? HStack : VStack
 
@@ -28,7 +30,7 @@ export function RadioField({ field, name, readOnly }: Props) {
           {...field.props}
         >
           <Wrapper gap="2" align={field.direction === 'row' ? 'center' : 'stretch'}>
-            {field.options.map((opt) => (
+            {options.map((opt) => (
               <RadioGroup.Item
                 key={String(opt.value)}
                 value={String(opt.value)}

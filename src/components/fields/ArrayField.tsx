@@ -7,6 +7,7 @@ import {
   Text,
   Separator,
   SimpleGrid,
+  Table,
 } from '@chakra-ui/react'
 import { Plus, Trash2 } from 'lucide-react'
 import { useFieldArray, useFormContext } from 'react-hook-form'
@@ -26,6 +27,7 @@ export function ArrayField({ field, name, readOnly }: Props) {
 
   const itemSchema = field.itemSchema
   const isObject = itemSchema.type === 'object' && 'fields' in itemSchema
+  const isHorizontal = field.layout === 'horizontal' && isObject
   const atMax = field.maxItems !== undefined && fields.length >= field.maxItems
   const atMin = field.minItems !== undefined && fields.length <= field.minItems
   const isDisabledOrReadOnly = field.disabled || readOnly || field.readOnly
@@ -41,6 +43,99 @@ export function ArrayField({ field, name, readOnly }: Props) {
     return itemSchema.defaultValue ?? ''
   }
 
+  const addButton = !isDisabledOrReadOnly && (
+    <Button
+      size="sm"
+      variant="outline"
+      colorPalette="blue"
+      disabled={atMax}
+      onClick={() => append(getNewItem())}
+      alignSelf="flex-start"
+    >
+      <Plus size={16} />
+      {field.addLabel ?? 'Add item'}
+    </Button>
+  )
+
+  const maxMessage = field.maxItems && fields.length >= field.maxItems && (
+    <Text fontSize="xs" color="orange.500">
+      Maximum of {field.maxItems} item(s) reached.
+    </Text>
+  )
+
+  // ── Horizontal (table-like) layout ──────────────────────────────────────────
+  if (isHorizontal && 'fields' in itemSchema) {
+    const subFields = itemSchema.fields
+
+    return (
+      <VStack gap="3" align="stretch">
+        {fields.length === 0 && (
+          <Text fontSize="sm" color="gray.500" fontStyle="italic">
+            No items yet. Click "{field.addLabel ?? 'Add item'}" to add one.
+          </Text>
+        )}
+
+        {fields.length > 0 && (
+          <Box overflowX="auto">
+            <Table.Root size="sm" variant="outline">
+              <Table.Header>
+                <Table.Row>
+                  {subFields.map((sf) => (
+                    <Table.ColumnHeader key={sf.name} whiteSpace="nowrap" fontWeight="semibold">
+                      {sf.label ?? sf.name}
+                      {(sf.required || (typeof sf.required === 'string' && sf.required)) && (
+                        <Text as="span" color="red.500" ml="1">*</Text>
+                      )}
+                    </Table.ColumnHeader>
+                  ))}
+                  {!isDisabledOrReadOnly && (
+                    <Table.ColumnHeader width="40px" />
+                  )}
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {fields.map((item, index) => (
+                  <Table.Row key={item.id}>
+                    {subFields.map((subField) => {
+                      const subName = `${name}.${index}.${subField.name}`
+                      return (
+                        <Table.Cell key={subField.name} verticalAlign="top" py="2">
+                          <FieldRenderer
+                            field={{ ...subField, label: undefined }}
+                            name={subName}
+                            readOnly={readOnly}
+                          />
+                        </Table.Cell>
+                      )
+                    })}
+                    {!isDisabledOrReadOnly && (
+                      <Table.Cell verticalAlign="top" py="2">
+                        <IconButton
+                          aria-label={field.removeLabel ?? 'Remove'}
+                          size="sm"
+                          variant="ghost"
+                          colorPalette="red"
+                          disabled={atMin}
+                          onClick={() => remove(index)}
+                        >
+                          <Trash2 size={16} />
+                        </IconButton>
+                      </Table.Cell>
+                    )}
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table.Root>
+          </Box>
+        )}
+
+        {addButton}
+        {maxMessage}
+      </VStack>
+    )
+  }
+
+  // ── Vertical (card) layout (default) ────────────────────────────────────────
   return (
     <VStack gap="3" align="stretch">
       {fields.length === 0 && (
@@ -100,25 +195,8 @@ export function ArrayField({ field, name, readOnly }: Props) {
         </Box>
       ))}
 
-      {!isDisabledOrReadOnly && (
-        <Button
-          size="sm"
-          variant="outline"
-          colorPalette="blue"
-          disabled={atMax}
-          onClick={() => append(getNewItem())}
-          alignSelf="flex-start"
-        >
-          <Plus size={16} />
-          {field.addLabel ?? 'Add item'}
-        </Button>
-      )}
-
-      {field.maxItems && fields.length >= field.maxItems && (
-        <Text fontSize="xs" color="orange.500">
-          Maximum of {field.maxItems} item(s) reached.
-        </Text>
-      )}
+      {addButton}
+      {maxMessage}
     </VStack>
   )
 }

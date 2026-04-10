@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2026-04-10
+
+### Added
+
+- **Horizontal (table) layout for array fields** — set `layout: "horizontal"` on any object-type array field to render rows as a compact table instead of stacked cards. Ideal for spreadsheet-like data entry (e.g. invoice line items, contacts).
+- `layout` prop on `ArrayFieldSchema` — `"vertical"` (default) or `"horizontal"`.
+
+### Fixed
+
+- **Empty grid slots from `dependsOn` fields** — conditional fields that failed their condition were previously rendered as invisible but still occupied a grid cell, leaving blank gaps in multi-column layouts. They are now skipped entirely.
+- **Duplicate `id` on checkbox/switch inside array rows** — `BooleanField` was forwarding the field `name` as the HTML `id`, causing duplicate IDs when the same sub-field appeared in multiple array rows. The `id` prop is no longer set explicitly, letting Chakra UI manage it.
+
+---
+
 ## [1.0.3] - 2026-04-10
 
 ### Added

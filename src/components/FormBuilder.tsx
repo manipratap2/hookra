@@ -69,6 +69,8 @@ function SectionBlock({ section, readOnly, formValues }: SectionProps) {
     <SimpleGrid columns={cols} gap="4">
       {section.fields.map((field) => {
         if (field.hidden) return null
+        // Skip the wrapper entirely when condition fails — avoids empty grid slots
+        if (field.dependsOn && !evaluateCondition(field.dependsOn, formValues)) return null
         const colSpan = widthToColSpan(field.width, cols)
         return (
           <Box key={field.name} gridColumn={colSpan > 1 ? `span ${colSpan}` : undefined}>
@@ -190,6 +192,8 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
                 <SimpleGrid columns={cols} gap="4">
                   {schema.fields.map((field: FieldSchema) => {
                     if (field.hidden) return null
+                    // Skip the wrapper entirely when condition fails — avoids empty grid slots
+                    if (field.dependsOn && !evaluateCondition(field.dependsOn, formValues)) return null
                     const colSpan = widthToColSpan(field.width, cols)
                     return (
                       <Box

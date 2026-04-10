@@ -261,6 +261,12 @@ export interface ArrayFieldSchema extends BaseField {
   addLabel?: string
   /** Label for each "Remove" button */
   removeLabel?: string
+  /**
+   * Layout of each row's fields.
+   * - "vertical" (default): fields stacked top-to-bottom, one per row
+   * - "horizontal": fields laid out side-by-side in a single row
+   */
+  layout?: 'vertical' | 'horizontal'
 }
 
 export interface ObjectFieldSchema extends BaseField {

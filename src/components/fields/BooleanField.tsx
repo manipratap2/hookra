@@ -26,7 +26,6 @@ export function BooleanField({ field, name, readOnly }: Props) {
         if (field.type === 'checkbox') {
           return (
             <Checkbox.Root
-              id={name}
               checked={isChecked}
               onCheckedChange={(details) => onChange(details.checked)}
               onBlur={onBlur}
@@ -46,7 +45,6 @@ export function BooleanField({ field, name, readOnly }: Props) {
         return (
           <HStack>
             <Switch.Root
-              id={name}
               checked={isChecked}
               onCheckedChange={(details) => onChange(details.checked)}
               onBlur={onBlur}

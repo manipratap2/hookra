@@ -2,12 +2,12 @@ import type { FormSchema } from 'hookra'
 
 export const objectArraysSchema: FormSchema = {
   title: 'Object Arrays (Add Rows)',
-  description: 'Dynamic arrays where each item is a multi-field object — the most common pattern for editable tables.',
+  description: 'Dynamic arrays where each item is a multi-field object — the most common pattern for editable tables. Supports both vertical (card) and horizontal (table) layouts.',
   showReset: true,
   sections: [
     {
-      title: 'Team Members',
-      description: 'Add and remove team members, each with name, role, and email.',
+      title: 'Team Members — Vertical (Card) Layout',
+      description: 'Each row is rendered as a stacked card. Best for rows with many fields or longer labels.',
       fields: [
         {
           name: 'members',
@@ -34,20 +34,28 @@ export const objectArraysSchema: FormSchema = {
                   { value: 'qa', label: 'QA Engineer' },
                 ],
               },
+              {
+                name: 'active',
+                type: 'checkbox',
+                label: 'Active',
+                checkboxLabel: 'Currently active',
+                defaultValue: true,
+              },
             ],
           },
         },
       ],
     },
     {
-      title: 'Line Items (Invoice)',
-      description: 'Add products with quantity and price per line.',
+      title: 'Line Items — Horizontal (Table) Layout',
+      description: 'Set layout: "horizontal" to render rows as a table. Ideal for compact, spreadsheet-like data entry.',
       fields: [
         {
           name: 'lineItems',
           type: 'array',
           label: 'Invoice Items',
           addLabel: 'Add line item',
+          layout: 'horizontal',
           minItems: 1,
           maxItems: 20,
           itemSchema: {
@@ -74,8 +82,43 @@ export const objectArraysSchema: FormSchema = {
       ],
     },
     {
-      title: 'Education History',
-      description: 'Add educational qualifications.',
+      title: 'Quick Contacts — Horizontal (Table) Layout',
+      description: 'Another horizontal example: a compact address book where each contact is a table row.',
+      fields: [
+        {
+          name: 'contacts',
+          type: 'array',
+          label: 'Contacts',
+          addLabel: 'Add contact',
+          layout: 'horizontal',
+          maxItems: 10,
+          itemSchema: {
+            type: 'object',
+            name: 'contact',
+            fields: [
+              { name: 'firstName', type: 'text', label: 'First Name', required: true },
+              { name: 'lastName', type: 'text', label: 'Last Name', required: true },
+              { name: 'email', type: 'email', label: 'Email' },
+              { name: 'phone', type: 'tel', label: 'Phone' },
+              {
+                name: 'type',
+                type: 'select',
+                label: 'Type',
+                defaultValue: 'personal',
+                options: [
+                  { value: 'personal', label: 'Personal' },
+                  { value: 'work', label: 'Work' },
+                  { value: 'other', label: 'Other' },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    },
+    {
+      title: 'Education History — Vertical (Card) Layout',
+      description: 'Add educational qualifications. Cards work well when rows have mixed field types.',
       fields: [
         {
           name: 'education',
@@ -102,7 +145,14 @@ export const objectArraysSchema: FormSchema = {
                 ],
               },
               { name: 'field', type: 'text', label: 'Field of Study' },
-              { name: 'year', type: 'integer', label: 'Year', min: 1950, max: 2026 },
+              { name: 'year', type: 'integer', label: 'Year', min: 1950, max: 2030 },
+              {
+                name: 'graduated',
+                type: 'checkbox',
+                label: 'Status',
+                checkboxLabel: 'Graduated / Completed',
+                defaultValue: true,
+              },
             ],
           },
         },

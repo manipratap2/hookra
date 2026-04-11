@@ -55,7 +55,9 @@ jobs:
         if: steps.tag_check.outputs.exists == 'false'
         run: |
           VERSION="${{ steps.version.outputs.VERSION }}"
-          awk "/^## \[${VERSION}\]/{flag=1; next} /^## \[/{if(flag) exit} flag && !/^---$/{print}" CHANGELOG.md > release_notes.md
+          # Escape dots so the version string is treated as a literal in awk regex
+          ESCAPED_VERSION=$(echo "$VERSION" | sed 's/\./\\./g')
+          awk "/^## \[${ESCAPED_VERSION}\]/{flag=1; next} /^## \[/{if(flag) exit} flag && !/^---$/{print}" CHANGELOG.md > release_notes.md
           if [ ! -s release_notes.md ]; then
             echo "No changelog entry found for version ${VERSION}" >&2
             exit 1

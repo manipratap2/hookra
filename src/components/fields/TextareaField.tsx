@@ -17,7 +17,7 @@ export function TextareaField({ field, name, readOnly }: Props) {
   const effectiveMaxLength = field.maxLength ?? (field.validation?.maxLength as number | undefined)
 
   return (
-    <Box position="relative">
+    <Box position="relative" width="100%">
       <Textarea
         id={name}
         placeholder={field.placeholder}
@@ -26,6 +26,7 @@ export function TextareaField({ field, name, readOnly }: Props) {
         disabled={field.disabled}
         readOnly={readOnly || field.readOnly}
         maxLength={effectiveMaxLength}
+        width="100%"
         {...field.props}
         {...register(name, rules)}
       />

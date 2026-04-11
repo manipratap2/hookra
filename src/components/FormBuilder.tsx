@@ -66,7 +66,7 @@ function SectionBlock({ section, readOnly, formValues }: SectionProps) {
   const cols = section.columns ?? 1
 
   const content = (
-    <SimpleGrid columns={{ base: 1, sm: cols }} gap="4">
+    <SimpleGrid columns={{ base: 1, sm: 12 }} gap="4">
       {section.fields.map((field) => {
         if (field.hidden) return null
         // Skip the wrapper entirely when condition fails — avoids empty grid slots
@@ -75,7 +75,7 @@ function SectionBlock({ section, readOnly, formValues }: SectionProps) {
         return (
           <Box
             key={field.name}
-            gridColumn={{ base: '1 / -1', sm: colSpan > 1 ? `span ${colSpan}` : undefined }}
+            gridColumn={{ base: '1 / -1', sm: `span ${colSpan}` }}
           >
             <FieldRenderer field={field} name={field.name} readOnly={readOnly} columns={cols} />
           </Box>
@@ -192,7 +192,7 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
               )}
 
               {schema.fields && schema.fields.length > 0 && (
-                <SimpleGrid columns={{ base: 1, sm: cols }} gap="4">
+                <SimpleGrid columns={{ base: 1, sm: 12 }} gap="4">
                   {schema.fields.map((field: FieldSchema) => {
                     if (field.hidden) return null
                     // Skip the wrapper entirely when condition fails — avoids empty grid slots
@@ -201,7 +201,7 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
                     return (
                       <Box
                         key={field.name}
-                        gridColumn={{ base: '1 / -1', sm: colSpan > 1 ? `span ${colSpan}` : undefined }}
+                        gridColumn={{ base: '1 / -1', sm: `span ${colSpan}` }}
                       >
                         <FieldRenderer
                           field={field}

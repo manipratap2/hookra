@@ -38,7 +38,7 @@ export function FieldWrapper({ field, name, children }: Props) {
     !field.label
 
   return (
-    <Field.Root invalid={!!errorMessage} required={isRequired}>
+    <Field.Root invalid={!!errorMessage} required={isRequired} width="100%">
       {!hideLabel && (
         <Field.Label htmlFor={name} mb="1">
           {field.label}

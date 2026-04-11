@@ -27,13 +27,14 @@ export function FileField({ field, name, readOnly }: Props) {
   }
 
   return (
-    <Box>
+    <Box width="100%">
       <Input
         id={name}
         type="file"
         accept={field.accept}
         multiple={field.multiple}
         disabled={field.disabled || readOnly || field.readOnly}
+        width="100%"
         css={{ paddingTop: '4px' }}
         {...field.props}
         {...register(name, rules)}

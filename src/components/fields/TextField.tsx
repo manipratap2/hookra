@@ -37,7 +37,7 @@ export function TextField({ field, name, readOnly }: Props) {
   if (!field.prefix && !field.suffix) return inputEl
 
   return (
-    <Group attached>
+    <Group attached width="100%">
       {field.prefix && <InputAddon>{field.prefix}</InputAddon>}
       {inputEl}
       {field.suffix && <InputAddon>{field.suffix}</InputAddon>}

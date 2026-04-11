@@ -29,6 +29,7 @@ export function NumberField({ field, name, readOnly }: Props) {
           step={field.step}
           disabled={field.disabled}
           readOnly={readOnly || field.readOnly}
+          width="100%"
           {...field.props}
         >
           <NumberInput.Input placeholder={field.placeholder} />

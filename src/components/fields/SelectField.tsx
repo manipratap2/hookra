@@ -18,6 +18,7 @@ export function SelectField({ field, name, readOnly }: Props) {
   return (
     <NativeSelect.Root
       disabled={field.disabled || readOnly || field.readOnly}
+      width="100%"
       {...field.props}
     >
       <NativeSelect.Field

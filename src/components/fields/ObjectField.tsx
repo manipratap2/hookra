@@ -24,12 +24,15 @@ export function ObjectField({ field, name, readOnly, columns = 1 }: Props) {
   const [open, setOpen] = useState(!(field.defaultCollapsed ?? false))
 
   const content = (
-    <SimpleGrid columns={columns} gap="4" mt={field.label ? '3' : '0'}>
+    <SimpleGrid columns={{ base: 1, sm: 12 }} gap="4" mt={field.label ? '3' : '0'}>
       {field.fields.map((subField) => {
         const subName = `${name}.${subField.name}`
         const colSpan = widthToColSpan(subField.width, columns)
         return (
-          <Box key={subField.name} gridColumn={colSpan > 1 ? `span ${colSpan}` : undefined}>
+          <Box
+            key={subField.name}
+            gridColumn={{ base: '1 / -1', sm: `span ${colSpan}` }}
+          >
             <FieldRenderer field={subField} name={subName} readOnly={readOnly} />
           </Box>
         )

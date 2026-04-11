@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] - 2026-04-11
+
+### Fixed
+
+- **Multi-column layouts now render correctly on all screen sizes** — the grid system was fundamentally broken: named widths (`half`, `third`, etc.) and numeric spans were computed relative to the section's `columns` count, collapsing everything to 1 column in `columns: 1` sections and producing incorrect spans elsewhere. The grid now uses a fixed 12-column CSS grid; named widths map to stable 12-col fractions (`half` = span 6, `third` = span 4, etc.), numeric widths are treated as 12-col spans, and un-sized fields default to `12 ÷ columns` (e.g. 4 columns in a 3-col section). All previous schemas remain valid.
+- **`ObjectField` columns now collapse to single-column on mobile** — the nested `SimpleGrid` inside object fields was using a fixed column count with no responsive breakpoint, causing multi-column sub-fields to remain side-by-side on narrow viewports.
+- **`Textarea` not stretching to full width** — the `<Textarea>` component and its wrapper `<Box>` now explicitly set `width="100%"`.
+- **All input components now reliably fill their grid cell** — `NumberInput`, `DateField`, `FileField`, `SelectField`, `SliderField`, and `TextField` (with prefix/suffix group) all lacked explicit `width="100%"`, causing them to render at intrinsic/shrink-wrapped widths in certain grid configurations. Fixed across all field types.
+- **`FieldWrapper` (`Field.Root`) now always stretches to full cell width** — without `width="100%"` on the outer `Field.Root`, the label + input stack could shrink inside its grid cell.
+
+---
+
 ## [1.0.5] - 2026-04-11
 
 ### Changed

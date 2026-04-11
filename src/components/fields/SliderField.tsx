@@ -24,7 +24,7 @@ export function SliderField({ field, name, readOnly }: Props) {
       rules={rules}
       defaultValue={min}
       render={({ field: { value, onChange } }) => (
-        <Box pt="6" pb="2">
+        <Box pt="6" pb="2" width="100%">
           <HStack justify="space-between" mb="2">
             <Text fontSize="sm" color="gray.500">{min}</Text>
             {field.showValue && (

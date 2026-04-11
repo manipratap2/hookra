@@ -27,6 +27,7 @@ export function DateField({ field, name, readOnly }: Props) {
       max={field.max}
       disabled={field.disabled}
       readOnly={readOnly || field.readOnly}
+      width="100%"
       {...field.props}
       {...register(name, rules)}
     />

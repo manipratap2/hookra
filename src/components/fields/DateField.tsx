@@ -18,6 +18,7 @@ const INPUT_TYPE: Record<string, string> = {
 export function DateField({ field, name, readOnly }: Props) {
   const { register } = useFormContext()
   const rules = buildValidationRules(field)
+  const isReadOnly = readOnly || field.readOnly
 
   return (
     <Input
@@ -26,7 +27,12 @@ export function DateField({ field, name, readOnly }: Props) {
       min={field.min}
       max={field.max}
       disabled={field.disabled}
-      readOnly={readOnly || field.readOnly}
+      readOnly={isReadOnly}
+      // Native date/time pickers ignore the readOnly attribute and still open on click.
+      // Block all pointer and keyboard interactions explicitly when the field is read-only.
+      onClickCapture={isReadOnly ? (e) => e.preventDefault() : undefined}
+      onKeyDownCapture={isReadOnly ? (e) => e.preventDefault() : undefined}
+      css={isReadOnly ? { pointerEvents: 'none' } : undefined}
       width="100%"
       {...field.props}
       {...register(name, rules)}

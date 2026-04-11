@@ -39,6 +39,10 @@ export default defineConfig({
           '@emotion/react': 'EmotionReact',
         },
       },
+      treeshake: {
+        moduleSideEffects: false,
+        propertyReadSideEffects: false,
+      },
     },
     sourcemap: true,
     minify: true,

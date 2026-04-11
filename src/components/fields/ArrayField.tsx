@@ -9,7 +9,16 @@ import {
   SimpleGrid,
   Table,
 } from '@chakra-ui/react'
-import { Plus, Trash2 } from 'lucide-react'
+const PlusIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+  </svg>
+)
+const Trash2Icon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" /><path d="M10 11v6" /><path d="M14 11v6" /><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+  </svg>
+)
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import type { ArrayFieldSchema } from '../../types/schema'
 import { FieldRenderer } from '../FieldRenderer'
@@ -52,7 +61,7 @@ export function ArrayField({ field, name, readOnly }: Props) {
       onClick={() => append(getNewItem())}
       alignSelf="flex-start"
     >
-      <Plus size={16} />
+      <PlusIcon />
       {field.addLabel ?? 'Add item'}
     </Button>
   )
@@ -118,7 +127,7 @@ export function ArrayField({ field, name, readOnly }: Props) {
                           disabled={atMin}
                           onClick={() => remove(index)}
                         >
-                          <Trash2 size={16} />
+                          <Trash2Icon />
                         </IconButton>
                       </Table.Cell>
                     )}
@@ -166,7 +175,7 @@ export function ArrayField({ field, name, readOnly }: Props) {
                 disabled={atMin}
                 onClick={() => remove(index)}
               >
-                <Trash2 size={16} />
+                <Trash2Icon />
               </IconButton>
             )}
           </HStack>

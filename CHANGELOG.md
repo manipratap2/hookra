@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.7] - 2026-04-11
+
+### Fixed
+
+- **`DateField` readOnly no longer opens the native date/time picker** — HTML5 date, time, and datetime-local inputs ignore the `readOnly` attribute when it comes to the browser's picker popup. Clicks and keyboard input are now blocked via `onClickCapture`, `onKeyDownCapture`, and `pointer-events: none` when the field is read-only, so the displayed value is fully locked.
+- **`SelectField` readOnly now preserves the field value in the form payload** — previously, readOnly on a select fell back to `disabled`, which excludes the value from form submission. Native `<select>` has no readOnly attribute, so interaction is now blocked via `pointer-events: none` and `tabIndex={-1}` without disabling the element. The selected value is correctly included on submit.
+- **`ColorField` readOnly no longer opens the native color picker** — same root cause as DateField: the native color picker opens on click regardless of `disabled`/`readOnly`. Fixed with `pointer-events: none` when `readOnly` or `field.readOnly` is set.
+
+### Changed
+
+- **CI: Node.js matrix updated to Node 24 only** — removed Node 22 from the CI matrix; Node 24 is the project's minimum and sole supported version.
+
+### Performance
+
+- **Removed `lucide-react` from the library bundle** — `ArrayField` and `ObjectField` previously imported 4 icons from `lucide-react`, bundling the entire icon library into the consumer's output. The 4 icons (Plus, Trash2, ChevronDown, ChevronUp) are now inlined as lightweight SVG components. No API or visual change.
+- **Tighter tree-shaking** — Rollup `treeshake.moduleSideEffects: false` and `propertyReadSideEffects: false` added to the library build config for more aggressive dead-code elimination.
+
+---
+
 ## [1.0.6] - 2026-04-11
 
 ### Fixed

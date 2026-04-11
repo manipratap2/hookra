@@ -13,6 +13,7 @@ export function ColorField({ field, name, readOnly }: Props) {
   const { register, watch } = useFormContext()
   const rules = buildValidationRules(field)
   const currentValue = watch(name) ?? '#000000'
+  const isReadOnly = readOnly || field.readOnly
 
   return (
     <HStack gap="3">
@@ -24,9 +25,11 @@ export function ColorField({ field, name, readOnly }: Props) {
           padding: '4px',
           borderRadius: '6px',
           border: '1px solid var(--chakra-colors-gray-200)',
-          cursor: field.disabled || readOnly || field.readOnly ? 'not-allowed' : 'pointer',
+          // Native color pickers open on click regardless of readOnly; block via pointer-events.
+          cursor: field.disabled ? 'not-allowed' : isReadOnly ? 'default' : 'pointer',
+          pointerEvents: isReadOnly ? 'none' : undefined,
         }}
-        disabled={field.disabled || readOnly || field.readOnly}
+        disabled={field.disabled}
         {...register(name, rules)}
       />
       <Input

@@ -27,6 +27,7 @@ export const settingsSchema: FormSchema = {
           name: 'fontSize',
           type: 'slider',
           label: 'Font Size (px)',
+          width: 'full',
           min: 12,
           max: 24,
           step: 1,

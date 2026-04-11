@@ -117,9 +117,11 @@ function ExampleDemo({ example }: { example: ExampleDef }) {
         overflow="hidden"
       >
         <HStack
-          px="6"
+          px={{ base: "3", sm: "6" }}
           py="3"
           justify="space-between"
+          flexWrap="wrap"
+          gap="2"
           borderBottom="1px solid"
           borderColor={cardBorder}
         >
@@ -158,7 +160,7 @@ function ExampleDemo({ example }: { example: ExampleDef }) {
           </HStack>
         </HStack>
 
-        <Box p="6">
+        <Box p={{ base: "3", sm: "6" }}>
           {view === "preview" ? (
             <>
               <FormBuilder
@@ -271,7 +273,7 @@ export function Examples({ section }: ExamplesProps) {
       : undefined;
 
   return (
-    <Container maxW="breakpoint-lg" py="12">
+    <Container maxW="breakpoint-lg" py={{ base: "6", md: "12" }} px={{ base: "4", md: "6" }}>
       <VStack gap="8" align="stretch">
         {example ? (
           <>
@@ -281,12 +283,12 @@ export function Examples({ section }: ExamplesProps) {
                   {example.category}
                 </Badge>
               </HStack>
-              <Heading size="xl" letterSpacing="-0.03em">
+              <Heading size={{ base: "lg", md: "xl" }} letterSpacing="-0.03em">
                 {example.title}
               </Heading>
             </VStack>
             <ExampleDemo key={example.id} example={example} />
-            <HStack justify="space-between" pt="4">
+            <HStack justify="space-between" pt="4" flexWrap="wrap" gap="2">
               {prevExample ? (
                 <Button asChild variant="ghost" size="sm">
                   <Link to="/examples" search={{ section: prevExample.id }}>

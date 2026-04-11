@@ -66,14 +66,17 @@ function SectionBlock({ section, readOnly, formValues }: SectionProps) {
   const cols = section.columns ?? 1
 
   const content = (
-    <SimpleGrid columns={cols} gap="4">
+    <SimpleGrid columns={{ base: 1, sm: cols }} gap="4">
       {section.fields.map((field) => {
         if (field.hidden) return null
         // Skip the wrapper entirely when condition fails — avoids empty grid slots
         if (field.dependsOn && !evaluateCondition(field.dependsOn, formValues)) return null
         const colSpan = widthToColSpan(field.width, cols)
         return (
-          <Box key={field.name} gridColumn={colSpan > 1 ? `span ${colSpan}` : undefined}>
+          <Box
+            key={field.name}
+            gridColumn={{ base: '1 / -1', sm: colSpan > 1 ? `span ${colSpan}` : undefined }}
+          >
             <FieldRenderer field={field} name={field.name} readOnly={readOnly} columns={cols} />
           </Box>
         )
@@ -84,7 +87,7 @@ function SectionBlock({ section, readOnly, formValues }: SectionProps) {
   if (!section.title && !section.description) return content
 
   return (
-    <Box borderWidth="1px" borderRadius="lg" p="5" borderColor="gray.200">
+    <Box borderWidth="1px" borderRadius="lg" p={{ base: "3", sm: "5" }} borderColor="gray.200">
       {(section.title || section.description) && (
         <Box
           display="flex"
@@ -189,7 +192,7 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
               )}
 
               {schema.fields && schema.fields.length > 0 && (
-                <SimpleGrid columns={cols} gap="4">
+                <SimpleGrid columns={{ base: 1, sm: cols }} gap="4">
                   {schema.fields.map((field: FieldSchema) => {
                     if (field.hidden) return null
                     // Skip the wrapper entirely when condition fails — avoids empty grid slots
@@ -198,7 +201,7 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
                     return (
                       <Box
                         key={field.name}
-                        gridColumn={colSpan > 1 ? `span ${colSpan}` : undefined}
+                        gridColumn={{ base: '1 / -1', sm: colSpan > 1 ? `span ${colSpan}` : undefined }}
                       >
                         <FieldRenderer
                           field={field}

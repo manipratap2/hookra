@@ -125,6 +125,7 @@ export const widgetsSchema: FormSchema = {
           name: 'ratingSlider',
           type: 'slider',
           label: 'As Slider',
+          width: 'full',
           min: 0,
           max: 10,
           step: 1,

@@ -11,15 +11,35 @@ export interface VersionInfo {
 export const versions: VersionInfo[] = [
   {
     version: pkg.version,
-    date: '2026-04-09',
+    date: '2026-04-11',
     label: 'Latest',
     features: [
+      'Fully responsive forms — multi-column layouts collapse to single column on mobile',
+      'Lone fields in multi-column rows now expand to full row width automatically',
+    ],
+    changelog: [
+      'FormBuilder SimpleGrid is now responsive: multi-column layouts collapse to 1 column on mobile and expand on sm+',
+      'gridColumn spans reset on mobile to prevent squeezed half-width fields',
+      'SectionBlock padding is now responsive (tighter on mobile)',
+      'Added width: full to sliders in multi-column example schemas (widgetsSchema, settingsSchema, onlyDirtySchema)',
+      'Examples page container padding and vertical spacing tuned for mobile',
+      'Demo card header and body padding reduced on small screens',
+      'Example title heading scales down on mobile',
+      'Prev/next navigation wraps cleanly on narrow viewports',
+    ],
+  },
+  {
+    version: '1.0.4',
+    date: '2026-04-09',
+    features: [
+      'Horizontal table layout for array fields',
       'onlyDirty prop — submit only changed fields for PATCH-style APIs',
     ],
     changelog: [
+      'Array fields render in a horizontal table layout',
+      'Fixed dependsOn grid gaps in multi-column layouts',
       'Added onlyDirty prop to FormBuilder',
       'When true, onSubmit receives only fields the user changed (dirty fields)',
-      'Useful for PATCH-style API calls — no more manual diffing',
     ],
   },
   {

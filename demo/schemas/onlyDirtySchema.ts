@@ -54,6 +54,7 @@ export const onlyDirtySchema: FormSchema = {
       name: 'experience',
       type: 'slider',
       label: 'Years of Experience',
+      width: 'full',
       min: 0,
       max: 20,
       step: 1,

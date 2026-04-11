@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] - 2026-04-11
+
+### Changed
+
+- **Responsive multi-column forms** — `FormBuilder`'s grid now collapses to a single column on mobile (`base`) and restores the configured column count on `sm+`. Previously, multi-column layouts were fixed-width on all screen sizes.
+- **Full-width fields on mobile** — all `gridColumn` spans are reset to `1 / -1` on mobile, preventing fields from rendering at fractional widths on small screens.
+- **Responsive section padding** — `SectionBlock` border padding scales down on mobile for a tighter fit.
+
+### Fixed
+
+- **Sliders squeezed in multi-column layouts** — sliders in `widgetsSchema`, `settingsSchema`, and `onlyDirtySchema` now have `width: "full"` so they always span the full row regardless of the section's column count.
+- **Examples page layout on mobile** — container padding, vertical spacing, demo card header/body padding, and the example title heading are all tuned for small screens. Prev/next navigation wraps cleanly on narrow viewports.
+
+---
+
 ## [1.0.4] - 2026-04-10
 
 ### Added

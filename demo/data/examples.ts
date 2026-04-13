@@ -32,6 +32,7 @@ import { contactSchema } from '../schemas/contactSchema'
 import { largeFormSchema } from '../schemas/largeFormSchema'
 import { onlyDirtySchema } from '../schemas/onlyDirtySchema'
 import { fillFromSchema } from '../schemas/fillFromSchema'
+import { fillFromArraySchema } from '../schemas/fillFromArraySchema'
 import { fillFromFetcher } from '../mocks/fillFromFetcher'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -286,6 +287,79 @@ const schema = {
 }
 
 // Wire it up — pass onFill to FormBuilder:
+<FormBuilder
+  schema={schema}
+  onFill={myFetcher}
+  onSubmit={(data) => console.log(data)}
+/>`,
+  },
+
+  {
+    id: 'fill-from-array',
+    title: 'API-Populated Array',
+    category: 'Conditional',
+    description: 'Select a department and watch an array field populate with employee rows fetched from a mock API — no manual "Add" clicks needed. Rows can still be edited or removed after fill.',
+    features: ['fillFrom', 'Array field population', 'replace()', 'onFill', 'Dynamic rows', 'Editable after fill'],
+    schema: fillFromArraySchema,
+    onFill: fillFromFetcher,
+    sourceCode: `import { FormBuilder } from 'hookra'
+import type { FillFetcher } from 'hookra'
+
+// Your fetcher returns { employees: [...] } for the array field.
+const myFetcher: FillFetcher = async ({ trigger, value }) => {
+  const res = await fetch(\`/api/\${trigger}?value=\${value}\`)
+  return res.json()
+  // e.g. { employees: [{ name: 'Alice', role: 'Engineer', ... }] }
+}
+
+const schema = {
+  fields: [
+    {
+      name: 'department',
+      type: 'select',
+      label: 'Department',
+      options: [
+        { value: 'engineering', label: 'Engineering' },
+        { value: 'design',      label: 'Design' },
+      ],
+    },
+    {
+      name: 'employees',
+      type: 'array',
+      label: 'Employees',
+      addLabel: 'Add employee',
+      layout: 'horizontal',
+      // Watch "department"; when it changes, populate only the "employees" key.
+      fillFrom: {
+        trigger: 'department',
+        targets: ['employees'],
+        debounce: 0,
+      },
+      itemSchema: {
+        type: 'object',
+        name: 'employee',
+        fields: [
+          { name: 'name',  type: 'text',   label: 'Name',  required: true },
+          { name: 'role',  type: 'text',   label: 'Role',  required: true },
+          { name: 'email', type: 'email',  label: 'Email' },
+          {
+            name: 'level',
+            type: 'select',
+            label: 'Level',
+            defaultValue: 'mid',
+            options: [
+              { value: 'junior', label: 'Junior' },
+              { value: 'mid',    label: 'Mid' },
+              { value: 'senior', label: 'Senior' },
+              { value: 'lead',   label: 'Lead' },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+}
+
 <FormBuilder
   schema={schema}
   onFill={myFetcher}

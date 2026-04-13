@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.11] - 2026-04-13
+
+### Fixed
+
+- **`ArrayField` now correctly populates rows via `fillFrom`** — when `onFill` returns an array value for an `array`-type field, `ArrayField` detects the external `setValue` call and invokes `useFieldArray`'s `replace()` to sync its internal row state. Previously, `setValue` wrote the data into the RHF store but `useFieldArray` was unaware, so the UI showed no rows despite the values being present. The fix uses `useWatch` on the array field's own path and an effect that calls `replace()` whenever the store length diverges from `useFieldArray`'s tracked length — covering both "fill from API" and "reset to empty" scenarios without interfering with normal append/remove operations.
+
+---
+
 ## [1.0.10] - 2026-04-13
 
 ### Fixed

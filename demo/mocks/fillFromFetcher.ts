@@ -2,6 +2,34 @@ import type { FillFetcher } from 'hookra'
 
 // ─── Mock data tables ─────────────────────────────────────────────────────────
 
+type Employee = { name: string; role: string; email: string; level: string }
+
+const DEPARTMENT_DATA: Record<string, Employee[]> = {
+  engineering: [
+    { name: 'Alice Chen',    role: 'Backend Engineer',      email: 'alice@example.com',    level: 'senior' },
+    { name: 'Bob Martinez',  role: 'Frontend Engineer',     email: 'bob@example.com',      level: 'mid'    },
+    { name: 'Carol Nguyen',  role: 'DevOps Engineer',       email: 'carol@example.com',    level: 'senior' },
+    { name: 'David Kim',     role: 'Junior Engineer',       email: 'david@example.com',    level: 'junior' },
+  ],
+  design: [
+    { name: 'Eva Rossi',     role: 'Product Designer',      email: 'eva@example.com',      level: 'lead'   },
+    { name: 'Frank Okafor',  role: 'UX Researcher',         email: 'frank@example.com',    level: 'mid'    },
+    { name: 'Grace Lee',     role: 'Visual Designer',       email: 'grace@example.com',    level: 'junior' },
+  ],
+  marketing: [
+    { name: 'Henry Park',    role: 'Growth Lead',           email: 'henry@example.com',    level: 'lead'   },
+    { name: 'Irene Torres',  role: 'Content Strategist',    email: 'irene@example.com',    level: 'senior' },
+    { name: 'James Nwosu',   role: 'SEO Specialist',        email: 'james@example.com',    level: 'mid'    },
+    { name: 'Karen Blake',   role: 'Social Media Manager',  email: 'karen@example.com',    level: 'mid'    },
+    { name: 'Leo Singh',     role: 'Marketing Intern',      email: 'leo@example.com',      level: 'junior' },
+  ],
+  sales: [
+    { name: 'Mia Johansson', role: 'Sales Director',        email: 'mia@example.com',      level: 'lead'   },
+    { name: 'Noah Patel',    role: 'Account Executive',     email: 'noah@example.com',     level: 'senior' },
+    { name: 'Olivia Reed',   role: 'SDR',                   email: 'olivia@example.com',   level: 'junior' },
+  ],
+}
+
 const COUNTRY_DATA: Record<string, { phone_prefix: string; currency: string; city: string }> = {
   us: { phone_prefix: '+1',   currency: 'USD', city: 'New York' },
   gb: { phone_prefix: '+44',  currency: 'GBP', city: 'London' },
@@ -60,6 +88,11 @@ export const fillFromFetcher: FillFetcher = async ({ trigger, value }) => {
   if (trigger === 'product_category') {
     const data = PRODUCT_DATA[String(value)]
     return data ?? {}
+  }
+
+  if (trigger === 'department') {
+    const rows = DEPARTMENT_DATA[String(value)]
+    return rows ? { employees: rows } : {}
   }
 
   return {}

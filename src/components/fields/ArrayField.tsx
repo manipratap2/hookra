@@ -19,7 +19,8 @@ const Trash2Icon = () => (
     <polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" /><path d="M10 11v6" /><path d="M14 11v6" /><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
   </svg>
 )
-import { useFieldArray, useFormContext } from 'react-hook-form'
+import { useFieldArray, useFormContext, useWatch } from 'react-hook-form'
+import { useEffect, useRef } from 'react'
 import type { ArrayFieldSchema } from '../../types/schema'
 import { FieldRenderer } from '../FieldRenderer'
 import { widthToColSpan } from '../../utils/widthToColSpan'
@@ -32,7 +33,26 @@ interface Props {
 
 export function ArrayField({ field, name, readOnly }: Props) {
   const { control } = useFormContext()
-  const { fields, append, remove } = useFieldArray({ control, name })
+  const { fields, append, remove, replace } = useFieldArray({ control, name })
+
+  // Sync useFieldArray's internal state when the field value is set externally
+  // (e.g. via setValue in useFillFrom / fillFrom). useFieldArray tracks its own
+  // rows independently of the RHF store, so a plain setValue won't cause the UI
+  // to add/remove rows — we must call replace() ourselves when we detect an
+  // external write.
+  const storeValue = useWatch({ control, name }) as unknown[] | undefined
+  const prevLengthRef = useRef<number>(fields.length)
+
+  useEffect(() => {
+    if (!Array.isArray(storeValue)) return
+    // Only act when the store length differs from what useFieldArray knows about.
+    // This avoids re-triggering after our own append/remove/replace calls because
+    // those operations keep both in sync immediately.
+    if (storeValue.length !== prevLengthRef.current) {
+      replace(storeValue)
+    }
+    prevLengthRef.current = storeValue.length
+  }, [storeValue, replace])
 
   const itemSchema = field.itemSchema
   const isObject = itemSchema.type === 'object' && 'fields' in itemSchema

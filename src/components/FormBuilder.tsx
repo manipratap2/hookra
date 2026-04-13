@@ -239,7 +239,7 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
     useEffect(() => {
       const newDefaults = { ...buildDefaultValues(schema), ...externalDefaults }
       form.reset(newDefaults)
-    }, [schema, externalDefaults])
+    }, [schema, externalDefaults, form])
 
     useImperativeHandle(ref, () => ({
       form,

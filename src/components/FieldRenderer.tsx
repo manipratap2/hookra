@@ -48,23 +48,9 @@ export function FieldRenderer({ field, name, readOnly, columns = 1 }: Props) {
   const watchedValues = useWatch({ name: watchedKeys }) as unknown[]
 
   // Reconstruct the minimal values map needed by evaluateCondition.
-  // Use a ref to skip re-creating the map when the actual values haven't changed
-  // (RHF returns a new array reference on every subscription tick).
-  const prevConditionRef = useRef<{ keys: string[]; values: unknown[]; map: Record<string, unknown> }>({
-    keys: [],
-    values: [],
-    map: {},
-  })
   const conditionValues = useMemo(() => {
-    const prev = prevConditionRef.current
-    const unchanged =
-      prev.keys === watchedKeys &&
-      watchedValues.length === prev.values.length &&
-      watchedValues.every((v, i) => v === prev.values[i])
-    if (unchanged) return prev.map
     const map: Record<string, unknown> = {}
     watchedKeys.forEach((key, i) => { map[key] = watchedValues[i] })
-    prevConditionRef.current = { keys: watchedKeys, values: watchedValues, map }
     return map
   }, [watchedKeys, watchedValues])
 

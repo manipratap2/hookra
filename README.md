@@ -7,30 +7,75 @@
 npm install hookra
 ```
 
-## Quick start
+Hookra uses **Chakra UI v3** for its UI. If you don't already have it set up, install the peer dependencies:
+
+```bash
+npm install @chakra-ui/react @emotion/react react-hook-form
+```
+
+## Getting started
+
+### Step 1 — Wrap your app with `ChakraProvider`
+
+Hookra renders Chakra UI components, so your app needs a `ChakraProvider` at the root. If you already have one, skip this step.
 
 ```tsx
-import { FormBuilder } from 'hookra'
+// main.tsx (or index.tsx)
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { ChakraProvider, defaultSystem } from '@chakra-ui/react'
+import { App } from './App'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <ChakraProvider value={defaultSystem}>
+      <App />
+    </ChakraProvider>
+  </StrictMode>,
+)
+```
+
+> **Custom theme?** Pass your own system instead of `defaultSystem`:
+> ```tsx
+> import { createSystem, defaultConfig } from '@chakra-ui/react'
+> const system = createSystem(defaultConfig, { theme: { /* overrides */ } })
+> <ChakraProvider value={system}>…</ChakraProvider>
+> ```
+
+### Step 2 — Define a schema
+
+```ts
+// schema.ts
 import type { FormSchema } from 'hookra'
 
-const schema: FormSchema = {
+export const contactSchema: FormSchema = {
   title: 'Contact Us',
   fields: [
-    { name: 'name',  type: 'text',  label: 'Name',  required: true },
-    { name: 'email', type: 'email', label: 'Email', required: true },
+    { name: 'name',    type: 'text',     label: 'Name',    required: true },
+    { name: 'email',   type: 'email',    label: 'Email',   required: true },
     { name: 'message', type: 'textarea', label: 'Message', rows: 4 },
   ],
 }
+```
+
+### Step 3 — Render `<FormBuilder>`
+
+```tsx
+// ContactForm.tsx
+import { FormBuilder } from 'hookra'
+import { contactSchema } from './schema'
 
 export function ContactForm() {
   return (
     <FormBuilder
-      schema={schema}
+      schema={contactSchema}
       onSubmit={(data) => console.log(data)}
     />
   )
 }
 ```
+
+That's it. The form renders with validation, labels, and a submit button out of the box.
 
 ## Field types
 
@@ -292,9 +337,12 @@ import { TextField, SelectField } from 'hookra'
 ```
 react >= 18
 react-dom >= 18
+react-hook-form >= 7
+@chakra-ui/react >= 3
+@emotion/react >= 11
 ```
 
-Everything else (`react-hook-form`, `@chakra-ui/react`, `@emotion/react`) is installed automatically.
+All of the above must be installed in your project. See [Getting started](#getting-started) for the install command.
 
 ## Dev / Demo
 

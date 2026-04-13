@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import type { FieldSchema } from '../types/schema'
-import { evaluateCondition } from '../logic/evaluateCondition'
+import { evaluateCondition, extractConditionFields } from '../logic/evaluateCondition'
 import { useFillFrom } from '../logic/useFillFrom'
 import { useFormBuilderContext } from '../context/FormBuilderContext'
 import { FieldWrapper } from './FieldWrapper'
@@ -36,12 +36,43 @@ export function FieldRenderer({ field, name, readOnly, columns = 1 }: Props) {
   const { onFill } = useFormBuilderContext()
   const [filling, setFilling] = useState(false)
 
-  // Always call useWatch at the top level (never conditionally)
-  const allValues = useWatch() as Record<string, unknown>
+  // Compute the exact field paths this field's condition depends on.
+  // Stable across renders because field.dependsOn is from the schema (reference-stable).
+  const watchedKeys = useMemo(
+    () => (field.dependsOn ? extractConditionFields(field.dependsOn) : []),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [field.dependsOn],
+  )
+
+  // Watch only the fields referenced in dependsOn — not the entire form store.
+  // When there is no dependsOn, this returns [] and triggers zero subscriptions.
+  const watchedValues = useWatch({ name: watchedKeys }) as unknown[]
+
+  // Reconstruct the minimal values map needed by evaluateCondition.
+  // Use a ref to skip re-creating the map when the actual values haven't changed
+  // (RHF returns a new array reference on every subscription tick).
+  const prevConditionRef = useRef<{ keys: string[]; values: unknown[]; map: Record<string, unknown> }>({
+    keys: [],
+    values: [],
+    map: {},
+  })
+  const conditionValues = useMemo(() => {
+    const prev = prevConditionRef.current
+    const unchanged =
+      prev.keys === watchedKeys &&
+      watchedValues.length === prev.values.length &&
+      watchedValues.every((v, i) => v === prev.values[i])
+    if (unchanged) return prev.map
+    const map: Record<string, unknown> = {}
+    watchedKeys.forEach((key, i) => { map[key] = watchedValues[i] })
+    prevConditionRef.current = { keys: watchedKeys, values: watchedValues, map }
+    return map
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchedKeys, watchedValues])
 
   // Evaluate visibility
   const visible = field.dependsOn
-    ? evaluateCondition(field.dependsOn, allValues)
+    ? evaluateCondition(field.dependsOn, conditionValues)
     : true
 
   // Track previous visibility to unregister only on transition

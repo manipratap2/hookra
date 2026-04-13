@@ -12,6 +12,27 @@ function isCompoundCondition(c: Condition): c is CompoundCondition {
 }
 
 /**
+ * Extract all field paths referenced in a condition tree.
+ * Used to scope useWatch subscriptions to only the fields that
+ * actually affect a given field's visibility — avoiding whole-form
+ * re-renders when unrelated fields change.
+ */
+export function extractConditionFields(condition: Condition): string[] {
+  if (isSimpleCondition(condition)) {
+    return [condition.field]
+  }
+  if (isCompoundCondition(condition)) {
+    const { all, any, not } = condition
+    const results: string[] = []
+    if (all) all.forEach((c) => results.push(...extractConditionFields(c)))
+    if (any) any.forEach((c) => results.push(...extractConditionFields(c)))
+    if (not) results.push(...extractConditionFields(not))
+    return results
+  }
+  return []
+}
+
+/**
  * Resolve a dot-path value from a potentially nested object.
  * e.g. getByPath({ a: { b: 1 } }, "a.b") → 1
  */

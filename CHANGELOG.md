@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.9] - 2026-04-13
+
+### Performance
+
+- **Scoped `useWatch` subscriptions — zero whole-form re-renders** — `FieldRenderer`, `SectionBlock`, and the top-level fields grid previously called `useWatch()` with no arguments, subscribing every component to the entire form store. Any value change (including values written by `fillFrom`) triggered a re-render of every field in the form. Each component now computes the exact field paths referenced in its `dependsOn` condition tree via the new `extractConditionFields` utility and calls `useWatch({ name: [...paths] })`, subscribing only to the values it actually needs. Fields with no `dependsOn` make zero subscriptions. On a 100-field form this reduces re-renders from O(N) per value change to O(1) — only the fields whose conditions reference the changed value re-render.
+- **Stable `conditionValues` reference** — `FieldRenderer` now holds a ref to the previous condition-values snapshot and returns the same object reference when the values haven't changed (shallow equality per key). This prevents downstream `useMemo`/`useEffect` hooks from running on unrelated store ticks where subscribed values are unchanged.
+- **`extractConditionFields` utility** — pure recursive function that walks a `Condition` tree (simple, compound `all`/`any`/`not`) and returns a deduplicated list of all `field` paths referenced. Exported for advanced consumers.
+- **`TopLevelFields` component** — the inline fields grid that was previously rendered directly inside `FormBuilder` (and subscribed to the full form store via `form.watch()`) is now a dedicated component with its own scoped `useWatch`, isolating re-renders to the fields that have `dependsOn` conditions.
+- **Removed `form.watch()` from `FormBuilder`** — the last whole-form subscription at the `FormBuilder` level has been eliminated. `FormBuilder` itself no longer re-renders on any field value change.
+
+---
+
 ## [1.0.8] - 2026-04-13
 
 ### Added

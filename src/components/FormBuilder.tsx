@@ -9,10 +9,11 @@ import {
   Separator,
   Collapsible,
 } from '@chakra-ui/react'
-import { forwardRef, useImperativeHandle, useState, useEffect, type ComponentType } from 'react'
+import { forwardRef, useImperativeHandle, useMemo, useState, useEffect, type ComponentType } from 'react'
 import {
   useForm,
   FormProvider,
+  useWatch,
   type UseFormReturn,
   type SubmitHandler,
   type DefaultValues,
@@ -20,7 +21,7 @@ import {
 import type { FormSchema, FormSection, FieldSchema } from '../types/schema'
 import type { FillFetcher } from '../logic/useFillFrom'
 import { buildDefaultValues } from '../logic/buildDefaultValues'
-import { evaluateCondition } from '../logic/evaluateCondition'
+import { evaluateCondition, extractConditionFields } from '../logic/evaluateCondition'
 import { createRegistry, type FieldRegistry } from '../registry/createRegistry'
 import { defaultRegistry } from '../registry/defaultRegistry'
 import { FormBuilderContext } from '../context/FormBuilderContext'
@@ -60,13 +61,34 @@ export interface FormBuilderProps {
 interface SectionProps {
   section: FormSection
   readOnly?: boolean
-  formValues: Record<string, unknown>
 }
 
-function SectionBlock({ section, readOnly, formValues }: SectionProps) {
+function SectionBlock({ section, readOnly }: SectionProps) {
   const [open, setOpen] = useState(!(section.defaultCollapsed ?? false))
 
-  if (section.dependsOn && !evaluateCondition(section.dependsOn, formValues)) {
+  // Collect all condition field paths needed by this section and its fields,
+  // so we subscribe only to those values — not the entire form store.
+  const watchedKeys = useMemo(() => {
+    const keys: string[] = []
+    if (section.dependsOn) keys.push(...extractConditionFields(section.dependsOn))
+    for (const field of section.fields) {
+      if (field.dependsOn) keys.push(...extractConditionFields(field.dependsOn))
+    }
+    return [...new Set(keys)]
+  // section reference is stable (from schema prop); re-run only when it changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [section])
+
+  const watchedValues = useWatch({ name: watchedKeys }) as unknown[]
+
+  const conditionValues = useMemo(() => {
+    const map: Record<string, unknown> = {}
+    watchedKeys.forEach((key, i) => { map[key] = watchedValues[i] })
+    return map
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchedKeys, watchedValues])
+
+  if (section.dependsOn && !evaluateCondition(section.dependsOn, conditionValues)) {
     return null
   }
 
@@ -77,7 +99,7 @@ function SectionBlock({ section, readOnly, formValues }: SectionProps) {
       {section.fields.map((field) => {
         if (field.hidden) return null
         // Skip the wrapper entirely when condition fails — avoids empty grid slots
-        if (field.dependsOn && !evaluateCondition(field.dependsOn, formValues)) return null
+        if (field.dependsOn && !evaluateCondition(field.dependsOn, conditionValues)) return null
         const colSpan = widthToColSpan(field.width, cols)
         return (
           <Box
@@ -124,6 +146,58 @@ function SectionBlock({ section, readOnly, formValues }: SectionProps) {
         </Collapsible.Root>
       ) : content}
     </Box>
+  )
+}
+
+// ─── Top-level flat fields list ───────────────────────────────────────────────
+
+interface TopLevelFieldsProps {
+  fields: FieldSchema[]
+  readOnly?: boolean
+  cols: number
+}
+
+function TopLevelFields({ fields, readOnly, cols }: TopLevelFieldsProps) {
+  const watchedKeys = useMemo(() => {
+    const keys: string[] = []
+    for (const field of fields) {
+      if (field.dependsOn) keys.push(...extractConditionFields(field.dependsOn))
+    }
+    return [...new Set(keys)]
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fields])
+
+  const watchedValues = useWatch({ name: watchedKeys }) as unknown[]
+
+  const conditionValues = useMemo(() => {
+    const map: Record<string, unknown> = {}
+    watchedKeys.forEach((key, i) => { map[key] = watchedValues[i] })
+    return map
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchedKeys, watchedValues])
+
+  return (
+    <SimpleGrid columns={{ base: 1, sm: 12 }} gap="4">
+      {fields.map((field: FieldSchema) => {
+        if (field.hidden) return null
+        // Skip the wrapper entirely when condition fails — avoids empty grid slots
+        if (field.dependsOn && !evaluateCondition(field.dependsOn, conditionValues)) return null
+        const colSpan = widthToColSpan(field.width, cols)
+        return (
+          <Box
+            key={field.name}
+            gridColumn={{ base: '1 / -1', sm: `span ${colSpan}` }}
+          >
+            <FieldRenderer
+              field={field}
+              name={field.name}
+              readOnly={readOnly}
+              columns={cols}
+            />
+          </Box>
+        )
+      })}
+    </SimpleGrid>
   )
 }
 
@@ -181,7 +255,6 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
     }))
 
     const registry: FieldRegistry = createRegistry(defaultRegistry, customRegistry)
-    const formValues = form.watch() as Record<string, unknown>
     const cols = schema.layout?.columns ?? 1
 
     return (
@@ -202,27 +275,7 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
               )}
 
               {schema.fields && schema.fields.length > 0 && (
-                <SimpleGrid columns={{ base: 1, sm: 12 }} gap="4">
-                  {schema.fields.map((field: FieldSchema) => {
-                    if (field.hidden) return null
-                    // Skip the wrapper entirely when condition fails — avoids empty grid slots
-                    if (field.dependsOn && !evaluateCondition(field.dependsOn, formValues)) return null
-                    const colSpan = widthToColSpan(field.width, cols)
-                    return (
-                      <Box
-                        key={field.name}
-                        gridColumn={{ base: '1 / -1', sm: `span ${colSpan}` }}
-                      >
-                        <FieldRenderer
-                          field={field}
-                          name={field.name}
-                          readOnly={readOnly}
-                          columns={cols}
-                        />
-                      </Box>
-                    )
-                  })}
-                </SimpleGrid>
+                <TopLevelFields fields={schema.fields} readOnly={readOnly} cols={cols} />
               )}
 
               {schema.sections && schema.sections.map((section, i) => (
@@ -230,7 +283,6 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
                   key={i}
                   section={section}
                   readOnly={readOnly}
-                  formValues={formValues}
                 />
               ))}
 

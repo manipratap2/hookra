@@ -11,7 +11,7 @@ import {
   Grid,
 } from "@chakra-ui/react";
 import { useColorMode } from "../color-mode";
-import { Check, Eye, Code2, ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, Eye, Code2, FileCode2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useMemo } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { FormBuilder } from "hookra";
@@ -82,7 +82,7 @@ function ResultPanel({ data }: ResultPanelProps) {
 
 function ExampleDemo({ example }: { example: ExampleDef }) {
   const [lastSubmit, setLastSubmit] = useState<unknown>(null);
-  const [view, setView] = useState<"preview" | "schema">("preview");
+  const [view, setView] = useState<"preview" | "schema" | "code">("preview");
   const { colorMode } = useColorMode();
   const cardBg = colorMode === "dark" ? "gray.800" : "white";
   const cardBorder = colorMode === "dark" ? "gray.700" : "gray.200";
@@ -93,6 +93,15 @@ function ExampleDemo({ example }: { example: ExampleDef }) {
     () => JSON.stringify(example.schema, null, 2),
     [example.schema],
   );
+
+  const badgeColor =
+    view === "preview" ? "green" : view === "schema" ? "purple" : "orange";
+  const badgeLabel =
+    view === "preview"
+      ? "Live Preview"
+      : view === "schema"
+        ? "Schema (JSON)"
+        : "Source Code";
 
   return (
     <VStack gap="6" align="stretch">
@@ -126,11 +135,11 @@ function ExampleDemo({ example }: { example: ExampleDef }) {
           borderColor={cardBorder}
         >
           <Badge
-            colorPalette={view === "preview" ? "green" : "purple"}
+            colorPalette={badgeColor}
             variant="subtle"
             fontSize="xs"
           >
-            {view === "preview" ? "Live Preview" : "Schema (JSON)"}
+            {badgeLabel}
           </Badge>
           <HStack gap="0" bg={toggleBg} p="0.5" borderRadius="lg">
             <Button
@@ -157,6 +166,20 @@ function ExampleDemo({ example }: { example: ExampleDef }) {
               <Code2 size={14} />
               Schema
             </Button>
+            {example.sourceCode && (
+              <Button
+                size="xs"
+                variant={view === "code" ? "solid" : "ghost"}
+                colorPalette="brand"
+                onClick={() => setView("code")}
+                borderRadius="md"
+                fontWeight="600"
+                fontSize="xs"
+              >
+                <FileCode2 size={14} />
+                Code
+              </Button>
+            )}
           </HStack>
         </HStack>
 
@@ -180,8 +203,14 @@ function ExampleDemo({ example }: { example: ExampleDef }) {
               />
               <ResultPanel data={lastSubmit} />
             </>
-          ) : (
+          ) : view === "schema" ? (
             <CodeBlock code={schemaCode} language="json" showLineNumbers />
+          ) : (
+            <CodeBlock
+              code={example.sourceCode ?? ""}
+              language="tsx"
+              showLineNumbers
+            />
           )}
         </Box>
       </Box>

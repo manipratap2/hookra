@@ -332,6 +332,30 @@ const validationProps: PropRowData[] = [
   },
 ];
 
+const fillFromFieldProps: PropRowData[] = [
+  {
+    name: "trigger",
+    type: "string",
+    description:
+      "Field name whose value change triggers the fetch. Supports dot-notation (e.g. \"address.country\").",
+    required: true,
+  },
+  {
+    name: "targets",
+    type: "string[] | '*'",
+    default: '"*"',
+    description:
+      "Field names to populate from the fetcher response. Use '*' to merge every key returned by the fetcher.",
+  },
+  {
+    name: "debounce",
+    type: "number",
+    default: "300",
+    description:
+      "Milliseconds to wait after the trigger value changes before calling onFill. Set to 0 for instant (e.g. select dropdowns).",
+  },
+];
+
 const validApiSections = [
   "formbuilder",
   "schema",
@@ -339,6 +363,7 @@ const validApiSections = [
   "conditions",
   "validation",
   "registry",
+  "fillfrom",
 ];
 
 export function ApiReference({ section }: { section: string }) {
@@ -770,6 +795,216 @@ const registry = createRegistry(defaultRegistry, {
               filename="Registry API"
               showLineNumbers
             />
+          </Box>
+        )}
+
+        {section === "fillfrom" && (
+          <Box>
+            <Heading size="lg" mb="2">
+              fillFrom &amp; onFill
+              <Badge colorPalette="brand" ml="2" fontSize="xs" variant="subtle">
+                v1.0.8
+              </Badge>
+            </Heading>
+            <Text color={mutedColor} mb="6">
+              Declarative API-driven field population. When a trigger field's
+              value changes, <Code fontSize="xs">onFill</Code> is called and the
+              returned data is merged into the form. Hookra never makes HTTP
+              requests itself — your fetcher owns auth headers, caching, and
+              retry logic.
+            </Text>
+
+            <Heading size="sm" mb="3">
+              How it works
+            </Heading>
+            <Box
+              bg={cardBg}
+              border="1px solid"
+              borderColor={cardBorder}
+              borderRadius="xl"
+              p="5"
+              mb="6"
+            >
+              <VStack align="stretch" gap="2" fontSize="sm" color={mutedColor}>
+                <Text>
+                  1. Add <Code fontSize="xs">fillFrom</Code> to any field in
+                  your schema. Set <Code fontSize="xs">trigger</Code> to the
+                  field whose value change should kick off a fetch.
+                </Text>
+                <Text>
+                  2. Pass an <Code fontSize="xs">onFill</Code> async function to{" "}
+                  <Code fontSize="xs">{"<FormBuilder />"}</Code>. It receives{" "}
+                  <Code fontSize="xs">{"{ trigger, value, field }"}"</Code> and
+                  must return a plain object.
+                </Text>
+                <Text>
+                  3. Hookra debounces the change (default 300 ms), calls your
+                  fetcher, then sets each target field using the returned keys.
+                  In-flight requests are automatically cancelled when a new
+                  value arrives.
+                </Text>
+              </VStack>
+            </Box>
+
+            <Heading size="sm" mb="3">
+              FillFetcher type
+            </Heading>
+            <CodeBlock
+              code={`import type { FillFetcher } from 'hookra'
+
+type FillFetcher = (params: {
+  /** The field that carries the fillFrom config */
+  field: string
+  /** The trigger field name */
+  trigger: string
+  /** Current value of the trigger field */
+  value: unknown
+}) => Promise<Record<string, unknown>>`}
+              language="tsx"
+              filename="FillFetcher"
+              showLineNumbers
+            />
+
+            <Heading size="sm" mt="6" mb="3">
+              fillFrom schema options
+            </Heading>
+            <Text color={mutedColor} fontSize="sm" mb="3">
+              Add <Code fontSize="xs">fillFrom</Code> to any field that should
+              trigger a fetch:
+            </Text>
+            <PropsTable rows={fillFromFieldProps} />
+
+            <Heading size="sm" mt="6" mb="3">
+              onFill prop (FormBuilder)
+            </Heading>
+            <Text color={mutedColor} fontSize="sm" mb="4">
+              Pass a single <Code fontSize="xs">onFill</Code> fetcher to{" "}
+              <Code fontSize="xs">{"<FormBuilder />"}</Code>. It is shared by
+              all <Code fontSize="xs">fillFrom</Code> fields in the schema.
+            </Text>
+
+            <CodeBlock
+              code={`import { FormBuilder } from 'hookra'
+import type { FillFetcher } from 'hookra'
+
+const myFetcher: FillFetcher = async ({ trigger, value }) => {
+  const res = await fetch(\`/api/fill/\${trigger}?value=\${value}\`)
+  return res.json()   // { fieldName: value, … }
+}
+
+<FormBuilder
+  schema={schema}
+  onFill={myFetcher}
+  onSubmit={(data) => console.log(data)}
+/>`}
+              language="tsx"
+              filename="Wiring onFill"
+              showLineNumbers
+            />
+
+            <Heading size="sm" mt="6" mb="3">
+              Schema example — partial targets
+            </Heading>
+            <CodeBlock
+              code={`// Trigger: selecting a country fills three specific fields
+{
+  name: 'country',
+  type: 'select',
+  label: 'Country',
+  options: [
+    { value: 'us', label: 'United States' },
+    { value: 'gb', label: 'United Kingdom' },
+  ],
+  fillFrom: {
+    trigger: 'country',
+    targets: ['phone_prefix', 'currency', 'city'],
+    debounce: 0,   // instant for dropdowns
+  },
+},
+{ name: 'phone_prefix', type: 'text', label: 'Phone Prefix', readOnly: true },
+{ name: 'currency',     type: 'text', label: 'Currency',     readOnly: true },
+{ name: 'city',         type: 'text', label: 'City' },`}
+              language="json"
+              filename="Partial targets"
+              showLineNumbers
+            />
+
+            <Heading size="sm" mt="6" mb="3">
+              Schema example — wildcard merge
+            </Heading>
+            <CodeBlock
+              code={`// targets: '*' → every key returned by onFill is merged into the form
+{
+  name: 'product_category',
+  type: 'select',
+  label: 'Product Category',
+  options: [
+    { value: 'electronics', label: 'Electronics' },
+    { value: 'books',       label: 'Books' },
+  ],
+  fillFrom: {
+    trigger: 'product_category',
+    targets: '*',
+    debounce: 200,
+  },
+},
+{ name: 'product_name', type: 'text',   label: 'Product Name' },
+{ name: 'unit_price',   type: 'number', label: 'Unit Price' },
+{ name: 'description',  type: 'textarea', label: 'Description' },`}
+              language="json"
+              filename="Wildcard targets"
+              showLineNumbers
+            />
+
+            <Heading size="sm" mt="6" mb="3">
+              Behaviour notes
+            </Heading>
+            <Box
+              bg={cardBg}
+              border="1px solid"
+              borderColor={cardBorder}
+              borderRadius="xl"
+              p="5"
+            >
+              <VStack align="stretch" gap="2" fontSize="sm" color={mutedColor}>
+                <HStack align="start">
+                  <Code fontSize="xs" flexShrink={0}>No fetch on mount</Code>
+                  <Text>
+                    — fillFrom only fires when the trigger value changes to a
+                    non-empty value. Empty / null trigger values are ignored.
+                  </Text>
+                </HStack>
+                <HStack align="start">
+                  <Code fontSize="xs" flexShrink={0}>Debounce</Code>
+                  <Text>
+                    — Defaults to 300 ms. Set to 0 for instant response (e.g.
+                    select dropdowns). Set higher (≥ 500 ms) for text inputs.
+                  </Text>
+                </HStack>
+                <HStack align="start">
+                  <Code fontSize="xs" flexShrink={0}>Cancellation</Code>
+                  <Text>
+                    — In-flight requests are aborted via{" "}
+                    <Code fontSize="xs">AbortController</Code> when a new
+                    trigger value arrives before the previous fetch resolves.
+                  </Text>
+                </HStack>
+                <HStack align="start">
+                  <Code fontSize="xs" flexShrink={0}>Loading indicator</Code>
+                  <Text>
+                    — While fetching, the trigger field shows a spinner inside
+                    the input. No extra state management required.
+                  </Text>
+                </HStack>
+                <HStack align="start">
+                  <Code fontSize="xs" flexShrink={0}>Dirty tracking</Code>
+                  <Text>
+                    — Values set by fillFrom are marked as dirty, so they are
+                    included in <Code fontSize="xs">onlyDirty</Code> payloads.
+                  </Text>
+                </HStack>
+              </VStack>
+            </Box>
           </Box>
         )}
       </VStack>

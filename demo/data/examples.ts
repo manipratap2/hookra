@@ -49,6 +49,8 @@ export interface ExampleDef {
   onlyDirty?: boolean
   /** Optional async fetcher for fillFrom field population */
   onFill?: FillFetcher
+  /** Optional TypeScript source code snippet shown in the "Code" tab */
+  sourceCode?: string
 }
 
 export interface ExampleCategory {
@@ -238,6 +240,57 @@ export const allExamples: ExampleDef[] = [
     features: ['fillFrom', 'onFill', 'Async API', 'Partial targets', 'Wildcard merge', 'Debounce', 'Loading indicator'],
     schema: fillFromSchema,
     onFill: fillFromFetcher,
+    sourceCode: `import { FormBuilder } from 'hookra'
+import type { FillFetcher } from 'hookra'
+
+// Your onFill fetcher — owns auth, caching, retries, etc.
+const myFetcher: FillFetcher = async ({ trigger, value }) => {
+  const res = await fetch(\`/api/fill/\${trigger}?value=\${value}\`)
+  return res.json()  // { fieldName: value, … }
+}
+
+// In your schema — add fillFrom to the trigger field:
+const schema = {
+  fields: [
+    {
+      name: 'country',
+      type: 'select',
+      label: 'Country',
+      options: [
+        { value: 'us', label: 'United States' },
+        { value: 'gb', label: 'United Kingdom' },
+      ],
+      // When this field changes, onFill is called and
+      // phone_prefix + currency + city are populated:
+      fillFrom: {
+        trigger: 'country',
+        targets: ['phone_prefix', 'currency', 'city'],
+        debounce: 300,   // ms — defaults to 300
+      },
+    },
+    {
+      name: 'product_category',
+      type: 'select',
+      label: 'Product Category',
+      options: [/* … */],
+      // targets: '*' → merge every key the fetcher returns
+      fillFrom: {
+        trigger: 'product_category',
+        targets: '*',
+      },
+    },
+    { name: 'phone_prefix', type: 'text', label: 'Phone Prefix', readOnly: true },
+    { name: 'currency',     type: 'text', label: 'Currency',     readOnly: true },
+    { name: 'city',         type: 'text', label: 'City' },
+  ],
+}
+
+// Wire it up — pass onFill to FormBuilder:
+<FormBuilder
+  schema={schema}
+  onFill={myFetcher}
+  onSubmit={(data) => console.log(data)}
+/>`,
   },
 
   // ── Dynamic Data ───────────────────────────────────────────────────────────

@@ -58,6 +58,7 @@ const apiNavigation: NavGroup = {
     { id: 'api-conditions', to: '/api/$section', params: { section: 'conditions' }, label: 'Conditions' },
     { id: 'api-validation', to: '/api/$section', params: { section: 'validation' }, label: 'Validation' },
     { id: 'api-registry', to: '/api/$section', params: { section: 'registry' }, label: 'Registry' },
+    { id: 'api-fillfrom', to: '/api/$section', params: { section: 'fillfrom' }, label: 'fillFrom & onFill', isNew: true },
   ],
 }
 

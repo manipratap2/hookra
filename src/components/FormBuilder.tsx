@@ -76,7 +76,6 @@ function SectionBlock({ section, readOnly }: SectionProps) {
     }
     return [...new Set(keys)]
   // section reference is stable (from schema prop); re-run only when it changes
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [section])
 
   const watchedValues = useWatch({ name: watchedKeys }) as unknown[]
@@ -85,7 +84,6 @@ function SectionBlock({ section, readOnly }: SectionProps) {
     const map: Record<string, unknown> = {}
     watchedKeys.forEach((key, i) => { map[key] = watchedValues[i] })
     return map
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchedKeys, watchedValues])
 
   if (section.dependsOn && !evaluateCondition(section.dependsOn, conditionValues)) {
@@ -164,7 +162,6 @@ function TopLevelFields({ fields, readOnly, cols }: TopLevelFieldsProps) {
       if (field.dependsOn) keys.push(...extractConditionFields(field.dependsOn))
     }
     return [...new Set(keys)]
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields])
 
   const watchedValues = useWatch({ name: watchedKeys }) as unknown[]
@@ -173,7 +170,6 @@ function TopLevelFields({ fields, readOnly, cols }: TopLevelFieldsProps) {
     const map: Record<string, unknown> = {}
     watchedKeys.forEach((key, i) => { map[key] = watchedValues[i] })
     return map
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchedKeys, watchedValues])
 
   return (
@@ -243,7 +239,6 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
     useEffect(() => {
       const newDefaults = { ...buildDefaultValues(schema), ...externalDefaults }
       form.reset(newDefaults)
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [schema, externalDefaults])
 
     useImperativeHandle(ref, () => ({

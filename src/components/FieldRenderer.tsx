@@ -40,7 +40,6 @@ export function FieldRenderer({ field, name, readOnly, columns = 1 }: Props) {
   // Stable across renders because field.dependsOn is from the schema (reference-stable).
   const watchedKeys = useMemo(
     () => (field.dependsOn ? extractConditionFields(field.dependsOn) : []),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [field.dependsOn],
   )
 
@@ -67,7 +66,6 @@ export function FieldRenderer({ field, name, readOnly, columns = 1 }: Props) {
     watchedKeys.forEach((key, i) => { map[key] = watchedValues[i] })
     prevConditionRef.current = { keys: watchedKeys, values: watchedValues, map }
     return map
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchedKeys, watchedValues])
 
   // Evaluate visibility

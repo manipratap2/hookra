@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.10] - 2026-04-13
+
+### Fixed
+
+- **`useRef` calls moved to top level** — all `useRef` initializations that were previously inside conditional branches or nested callbacks have been hoisted to the top level of their respective hooks/components, satisfying the `react-hooks/rules-of-hooks` lint rule and ensuring stable ref identity across renders.
+- **`useWatch` dependency arrays corrected** — stale or missing entries in `useEffect` and `useCallback` dependency arrays that referenced `useWatch`-derived values have been corrected to include all consumed values, eliminating `react-hooks/exhaustive-deps` warnings and preventing subtle stale-closure bugs.
+- **Removed stale `eslint-disable` directives** — inline `// eslint-disable-next-line` comments that suppressed rules no longer violated (after the two fixes above) have been deleted. Leaving them in place caused ESLint to error with `"unused eslint-disable directive"` under the project's `reportUnusedDisableDirectives` setting.
+
+---
+
 ## [1.0.9] - 2026-04-13
 
 ### Performance

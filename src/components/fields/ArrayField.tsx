@@ -92,7 +92,7 @@ export function ArrayField({ field, name, readOnly }: Props) {
                   {subFields.map((sf) => (
                     <Table.ColumnHeader key={sf.name} whiteSpace="nowrap" fontWeight="semibold">
                       {sf.label ?? sf.name}
-                      {(sf.required || (typeof sf.required === 'string' && sf.required)) && (
+                      {sf.required && (
                         <Text as="span" color="red.500" ml="1">*</Text>
                       )}
                     </Table.ColumnHeader>

@@ -28,23 +28,27 @@ export function buildValidationRules(field: FieldSchema): RegisterOptions {
   const v: FieldValidation = field.validation ?? {}
 
   if (v.minLength !== undefined) {
-    const r = resolveRuleValue(v.minLength, `Minimum ${(v.minLength as { value: number }).value ?? v.minLength} characters`)
-    rules.minLength = r
+    const raw = v.minLength
+    const num = typeof raw === 'object' && 'value' in raw ? raw.value : raw
+    rules.minLength = resolveRuleValue(raw, `Minimum ${num} characters`)
   }
 
   if (v.maxLength !== undefined) {
-    const r = resolveRuleValue(v.maxLength, `Maximum ${(v.maxLength as { value: number }).value ?? v.maxLength} characters`)
-    rules.maxLength = r
+    const raw = v.maxLength
+    const num = typeof raw === 'object' && 'value' in raw ? raw.value : raw
+    rules.maxLength = resolveRuleValue(raw, `Maximum ${num} characters`)
   }
 
   if (v.min !== undefined) {
-    const r = resolveRuleValue(v.min, `Minimum value is ${(v.min as { value: number }).value ?? v.min}`)
-    rules.min = r
+    const raw = v.min
+    const num = typeof raw === 'object' && 'value' in raw ? raw.value : raw
+    rules.min = resolveRuleValue(raw, `Minimum value is ${num}`)
   }
 
   if (v.max !== undefined) {
-    const r = resolveRuleValue(v.max, `Maximum value is ${(v.max as { value: number }).value ?? v.max}`)
-    rules.max = r
+    const raw = v.max
+    const num = typeof raw === 'object' && 'value' in raw ? raw.value : raw
+    rules.max = resolveRuleValue(raw, `Maximum value is ${num}`)
   }
 
   if (v.pattern !== undefined) {
@@ -77,7 +81,7 @@ export function buildValidationRules(field: FieldSchema): RegisterOptions {
 
   // Number fields: cast string input to number
   if (field.type === 'number' || field.type === 'integer') {
-    rules.setValueAs = (v: string) => (v === '' || v === undefined ? undefined : Number(v))
+    rules.setValueAs = (raw: string) => (raw === '' || raw === undefined ? undefined : Number(raw))
   }
 
   return rules

@@ -1,4 +1,4 @@
-import { Field } from '@chakra-ui/react'
+import { Field, Spinner, HStack } from '@chakra-ui/react'
 import type { ReactNode } from 'react'
 import { useFormContext } from 'react-hook-form'
 import type { FieldSchema } from '../types/schema'
@@ -7,9 +7,11 @@ interface Props {
   field: FieldSchema
   name: string
   children: ReactNode
+  /** True while a fillFrom fetch is in-flight for this field */
+  filling?: boolean
 }
 
-export function FieldWrapper({ field, name, children }: Props) {
+export function FieldWrapper({ field, name, children, filling = false }: Props) {
   const { formState: { errors } } = useFormContext()
 
   // Drill into nested error paths (e.g. "address.street")
@@ -40,9 +42,12 @@ export function FieldWrapper({ field, name, children }: Props) {
   return (
     <Field.Root invalid={!!errorMessage} required={isRequired} width="100%">
       {!hideLabel && (
-        <Field.Label htmlFor={name} mb="1">
-          {field.label}
-        </Field.Label>
+        <HStack mb="1" gap="2" align="center">
+          <Field.Label htmlFor={name} mb="0">
+            {field.label}
+          </Field.Label>
+          {filling && <Spinner size="xs" color="blue.500" />}
+        </HStack>
       )}
       {children}
       {field.description && !errorMessage && (

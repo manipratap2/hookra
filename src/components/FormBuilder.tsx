@@ -18,6 +18,7 @@ import {
   type DefaultValues,
 } from 'react-hook-form'
 import type { FormSchema, FormSection, FieldSchema } from '../types/schema'
+import type { FillFetcher } from '../logic/useFillFrom'
 import { buildDefaultValues } from '../logic/buildDefaultValues'
 import { evaluateCondition } from '../logic/evaluateCondition'
 import { createRegistry, type FieldRegistry } from '../registry/createRegistry'
@@ -46,6 +47,12 @@ export interface FormBuilderProps {
   submitButton?: React.ReactNode
   cancelButton?: React.ReactNode
   onlyDirty?: boolean
+  /**
+   * Async fetcher for `fillFrom` field population.
+   * Called whenever a field with `fillFrom` has its trigger value change.
+   * Return a `Record<string, unknown>` whose keys match target field names.
+   */
+  onFill?: FillFetcher
 }
 
 // ─── Section renderer ─────────────────────────────────────────────────────────
@@ -136,14 +143,15 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
       submitButton,
       cancelButton,
       onlyDirty = false,
+      onFill,
     },
     ref,
   ) {
-    const schemaDefaults = buildDefaultValues(schema)
-    const mergedDefaults = { ...schemaDefaults, ...externalDefaults }
-
     const form = useForm({
-      defaultValues: mergedDefaults as DefaultValues<Record<string, unknown>>,
+      defaultValues: {
+        ...buildDefaultValues(schema),
+        ...externalDefaults,
+      } as DefaultValues<Record<string, unknown>>,
       mode,
     })
 
@@ -167,7 +175,9 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
     useImperativeHandle(ref, () => ({
       form,
       submit: form.handleSubmit(submitHandler as SubmitHandler<Record<string, unknown>>),
-      reset: () => form.reset(mergedDefaults),
+      // Recompute defaults at call-time so the ref always resets to the
+      // latest schema + externalDefaults, not a stale closure snapshot.
+      reset: () => form.reset({ ...buildDefaultValues(schema), ...externalDefaults }),
     }))
 
     const registry: FieldRegistry = createRegistry(defaultRegistry, customRegistry)
@@ -175,7 +185,7 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
     const cols = schema.layout?.columns ?? 1
 
     return (
-      <FormBuilderContext.Provider value={{ form, schema, registry, readOnly }}>
+      <FormBuilderContext.Provider value={{ form, schema, registry, readOnly, onFill }}>
         <FormProvider {...form}>
           <form
             onSubmit={form.handleSubmit(submitHandler as SubmitHandler<Record<string, unknown>>)}
@@ -242,7 +252,7 @@ export const FormBuilder = forwardRef<FormBuilderRef, FormBuilderProps>(
                     <Button
                       variant="outline"
                       disabled={form.formState.isSubmitting}
-                      onClick={() => form.reset(mergedDefaults)}
+                      onClick={() => form.reset({ ...buildDefaultValues(schema), ...externalDefaults })}
                     >
                       {schema.resetLabel ?? 'Reset'}
                     </Button>

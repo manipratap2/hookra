@@ -113,6 +113,35 @@ export type ColSpan = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 /** Friendly aliases for ColSpan within a 12-column grid */
 export type FieldWidth = 'full' | 'half' | 'third' | 'quarter' | 'two-thirds' | 'three-quarters' | ColSpan
 
+// ─── Fill-from (API-driven field population) ─────────────────────────────────
+
+/**
+ * When the triggering field's value changes, `onFill` (passed to FormBuilder)
+ * is called with `{ trigger, value, field }`.  The returned object is merged
+ * into the form — either all keys (targets: '*') or only the listed field names.
+ *
+ * The library never makes HTTP requests itself; the consumer owns the fetching
+ * logic so it can add auth headers, caching, retry logic, etc.
+ */
+export interface FillFrom {
+  /**
+   * The field whose value change triggers the API call.
+   * Supports dot-notation paths (e.g. "address.country").
+   */
+  trigger: string
+  /**
+   * Field names to populate from the API response.
+   * Use '*' to merge every key returned by the fetcher into the form.
+   * Defaults to '*'.
+   */
+  targets?: string[] | '*'
+  /**
+   * Optional debounce in milliseconds before calling onFill.
+   * Defaults to 300 ms.
+   */
+  debounce?: number
+}
+
 // ─── Base field ───────────────────────────────────────────────────────────────
 
 export interface BaseField {
@@ -139,6 +168,12 @@ export interface BaseField {
    * When hidden by a condition the field is unmounted and its value is cleared.
    */
   dependsOn?: Condition
+  /**
+   * Declarative API-fill: when the trigger field's value changes, call
+   * `onFill` (prop on FormBuilder) and populate the listed target fields
+   * with the returned data.  Set `targets: '*'` to populate all returned keys.
+   */
+  fillFrom?: FillFrom
   /** Any extra props forwarded directly to the underlying Chakra component */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props?: Record<string, any>

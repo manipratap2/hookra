@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.8] - 2026-04-13
+
+### Added
+
+- **`fillFrom` — declarative API-driven field population** — any field can now declare a `fillFrom` config that watches a trigger field's value and calls a user-supplied `onFill` async fetcher whenever that value changes. The fetcher returns a `Record<string, unknown>` that is merged into the form, either for a specific list of `targets` field names or for all returned keys (`targets: '*'`). This makes it trivial to implement patterns like "select a country → auto-fill phone prefix, currency and city" or "select a product category → auto-fill name, price and description" without any bespoke wiring.
+  - `FillFrom` type on `BaseField.fillFrom` — `trigger`, `targets` (`string[]` or `'*'`), `debounce` (ms, default 300).
+  - `onFill?: FillFetcher` prop on `FormBuilder` — the consumer owns the fetch logic (auth headers, caching, retry, etc.); the library makes no HTTP requests itself.
+  - `useFillFrom` hook exported for advanced custom-field consumers.
+  - `FillFetcher` and `UseFillFromOptions` types exported from the package root.
+  - **Loading indicator** — a `<Spinner>` appears inline next to the field label while a fill fetch is in flight, giving users immediate feedback without blocking interaction.
+  - **Performance design**: AbortController cancels superseded in-flight requests; debounce prevents hammering the API on rapid changes; a stable `lastFetchedValue` ref prevents re-fetches caused by unrelated re-renders; `useCallback` memoises the `setValue` loop; the hook is a zero-cost no-op when `fillFrom` is absent.
+  - **Demo**: new "API Field Population" interactive example under the Conditional category shows two independent `fillFrom` triggers with a mock fetcher that simulates real network latency.
+
+### Fixed
+
+- **`buildValidationRules` — shadowed `v` parameter** — the inner `setValueAs` arrow used `v` as a parameter name, shadowing the outer `const v: FieldValidation` binding. Renamed to `raw` to eliminate the shadowing and make the intent clear.
+- **`buildValidationRules` — redundant double-cast in rule value extraction** — `(v.minLength as { value: number }).value ?? v.minLength` re-asserted the same union type twice. Replaced with a clean `typeof raw === 'object' && 'value' in raw ? raw.value : raw` guard shared by all four numeric rules (minLength, maxLength, min, max).
+- **`ArrayField` — redundant required indicator check** — the table-header required asterisk guard was `sf.required || (typeof sf.required === 'string' && sf.required)`, where the second clause is always a subset of the first (`string` is already truthy). Simplified to `sf.required`.
+- **`FormBuilder` — stale `mergedDefaults` closure on ref reset** — the `useImperativeHandle` reset function and the Reset button both captured `mergedDefaults` from the initial render. If `schema` or `externalDefaults` changed after mount, `ref.reset()` and the Reset button would restore the original defaults instead of the current ones. Both now recompute `{ ...buildDefaultValues(schema), ...externalDefaults }` at call time. The intermediate `schemaDefaults` / `mergedDefaults` variables have been removed.
+
+---
+
 ## [1.0.7] - 2026-04-11
 
 ### Fixed

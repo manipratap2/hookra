@@ -43,6 +43,9 @@ export type {
   FieldOption,
   OptionsFrom,
 
+  // Fill-from
+  FillFrom,
+
   // Conditions
   Condition,
   SimpleCondition,
@@ -69,6 +72,8 @@ export { evaluateOperator } from './logic/evaluateOperator'
 export { buildDefaultValues } from './logic/buildDefaultValues'
 export { buildValidationRules } from './logic/buildValidationRules'
 export { useResolvedOptions } from './logic/useResolvedOptions'
+export { useFillFrom } from './logic/useFillFrom'
+export type { FillFetcher, UseFillFromOptions } from './logic/useFillFrom'
 
 // ─── Context ──────────────────────────────────────────────────────────────────
 export { useFormBuilderContext } from './context/FormBuilderContext'

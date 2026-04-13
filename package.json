@@ -1,6 +1,6 @@
 {
   "name": "hookra",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "engines": {
     "node": ">=20.19.0"
   },

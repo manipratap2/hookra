@@ -167,6 +167,7 @@ function ExampleDemo({ example }: { example: ExampleDef }) {
                 schema={example.schema}
                 readOnly={example.readOnly}
                 onlyDirty={example.onlyDirty}
+                onFill={example.onFill}
                 onSubmit={(data) => {
                   setLastSubmit(data);
                   toaster.create({

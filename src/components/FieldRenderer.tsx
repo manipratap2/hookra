@@ -1,7 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import type { FieldSchema } from '../types/schema'
 import { evaluateCondition } from '../logic/evaluateCondition'
+import { useFillFrom } from '../logic/useFillFrom'
+import { useFormBuilderContext } from '../context/FormBuilderContext'
 import { FieldWrapper } from './FieldWrapper'
 
 // Field components
@@ -31,6 +33,8 @@ interface Props {
 
 export function FieldRenderer({ field, name, readOnly, columns = 1 }: Props) {
   const { unregister } = useFormContext()
+  const { onFill } = useFormBuilderContext()
+  const [filling, setFilling] = useState(false)
 
   // Always call useWatch at the top level (never conditionally)
   const allValues = useWatch() as Record<string, unknown>
@@ -50,6 +54,20 @@ export function FieldRenderer({ field, name, readOnly, columns = 1 }: Props) {
     prevVisible.current = visible
   }, [visible, unregister, name])
 
+  // fillFrom — only active when the field declares it AND the consumer
+  // provided an onFill fetcher.  Always called (Rules of Hooks); the hook
+  // itself is a no-op when fillFrom or fetcher is absent.
+  useFillFrom(
+    field.fillFrom && onFill
+      ? {
+          fieldName: name,
+          fillFrom: field.fillFrom,
+          fetcher: onFill,
+          onLoadingChange: setFilling,
+        }
+      : null,
+  )
+
   if (!visible) return null
 
   // Hidden fields: register but don't render a wrapper
@@ -60,7 +78,7 @@ export function FieldRenderer({ field, name, readOnly, columns = 1 }: Props) {
   const fieldContent = renderField(field, name, readOnly, columns)
 
   return (
-    <FieldWrapper field={field} name={name}>
+    <FieldWrapper field={field} name={name} filling={filling}>
       {fieldContent}
     </FieldWrapper>
   )

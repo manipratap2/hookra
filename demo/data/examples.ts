@@ -1,4 +1,4 @@
-import type { FormSchema } from 'hookra'
+import type { FormSchema, FillFetcher } from 'hookra'
 
 // ─── Schema imports ──────────────────────────────────────────────────────────
 import { simpleSchema } from '../schemas/simpleSchema'
@@ -31,6 +31,8 @@ import { settingsSchema } from '../schemas/settingsSchema'
 import { contactSchema } from '../schemas/contactSchema'
 import { largeFormSchema } from '../schemas/largeFormSchema'
 import { onlyDirtySchema } from '../schemas/onlyDirtySchema'
+import { fillFromSchema } from '../schemas/fillFromSchema'
+import { fillFromFetcher } from '../mocks/fillFromFetcher'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -45,6 +47,8 @@ export interface ExampleDef {
   readOnly?: boolean
   /** If true, the FormBuilder is rendered with onlyDirty prop */
   onlyDirty?: boolean
+  /** Optional async fetcher for fillFrom field population */
+  onFill?: FillFetcher
 }
 
 export interface ExampleCategory {
@@ -225,6 +229,15 @@ export const allExamples: ExampleDef[] = [
     description: 'The choices available in a field change based on the value of another field using optionsFrom — country/state, category/sub-category, role/permissions.',
     features: ['optionsFrom', 'Dynamic select', 'Dynamic radio', 'Dynamic checkboxgroup', 'Combined with dependsOn'],
     schema: dynamicOptionsSchema,
+  },
+  {
+    id: 'fill-from',
+    title: 'API Field Population',
+    category: 'Conditional',
+    description: 'Select a country or product category and watch related fields populate automatically via a mock API call. Demonstrates fillFrom with partial targets and wildcard merge.',
+    features: ['fillFrom', 'onFill', 'Async API', 'Partial targets', 'Wildcard merge', 'Debounce', 'Loading indicator'],
+    schema: fillFromSchema,
+    onFill: fillFromFetcher,
   },
 
   // ── Dynamic Data ───────────────────────────────────────────────────────────

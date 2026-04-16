@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.13] - 2026-04-16
+
+### Added
+
+- **`pin` field — Chakra `PinInput`** — digit-by-digit code entry for PINs and OTPs. Supports `length` (default 4), `mask` (hides characters like a password), and `otp` (enables browser OTP autocomplete). Schema type: `PinFieldSchema`.
+
+- **`rating` field — Chakra `RatingGroup`** — star-based rating input. Supports `count` (default 5), `allowHalf` (0.5-step increments), readOnly, and disabled states. Schema type: `RatingFieldSchema`.
+
+- **`editable` field — Chakra `Editable`** — click-to-edit inline text with a pencil trigger and confirm/cancel actions. Supports `multiline` (renders a resizable textarea) and `placeholder`. Schema type: `EditableFieldSchema`.
+
+- **`segmented` field — Chakra `SegmentGroup`** — pill-style segmented selector with animated indicator. Accepts `options`/`optionsFrom` (same as `radio`). Schema type: `SegmentedFieldSchema`.
+
+- **`tags` field — Chakra `TagsInput`** — free-form tag entry; press Enter to add, click × to remove. Supports `placeholder`, `max` (max tags, also validated), and `allowDuplicates`. Schema type: `TagsFieldSchema`.
+
+- **`checkboxcard` field — Chakra `CheckboxCard`** — multi-choice card selectors with optional descriptions per option. Supports `direction: 'row' | 'column'` and `options`/`optionsFrom`. Schema type: `CheckboxCardFieldSchema`.
+
+- **`radiocard` field — Chakra `RadioCard`** — single-choice card selectors with optional descriptions per option. Supports `direction: 'row' | 'column'` and `options`/`optionsFrom`. Schema type: `RadioCardFieldSchema`.
+
+- **`SelectFieldSchema.variant: 'chakra'`** — the `select` field now accepts `variant: 'chakra'` to render a full Chakra `Select` with floating listbox instead of the native `<select>`. The default `variant: 'native'` behaviour is unchanged.
+
+- **`file` field upgraded to Chakra `FileUpload`** — the `file` field now renders Chakra's `FileUpload.Root` with a drag-and-drop dropzone, selected-file list with previews and per-file delete, instead of a plain `<input type="file">`. All existing `FileFieldSchema` props (`accept`, `multiple`, `maxSize`) continue to work as before.
+
+- **New demo — "New Chakra Form Components"** — interactive example (`/examples?section=new-chakra-fields`) with dedicated sections for every new field type: PIN, rating, editable, segmented, tags, radio cards, checkbox cards, Chakra Select, and the upgraded file upload dropzone.
+
+- **Updated "All Field Types" demo** — the existing `all-fields` example now includes all new field types alongside the original set, giving a single at-a-glance reference for the full field library (25+ types).
+
+---
+
+## [1.0.12] - 2026-04-16
+
+### Added
+
+- **`ColorFieldSchema.variant` — Chakra UI color picker** — the `color` field now accepts `variant: 'chakra'` to render a full Chakra UI `ColorPicker` (gradient area, hue/alpha sliders, hex input, swatch trigger) instead of the compact native browser swatch. The default `variant: 'native'` behaviour is unchanged.
+
+### Fixed
+
+- **Dark mode borders** — section boxes (`FormBuilder`), object group boxes (`ObjectField`), and array item cards (`ArrayField`) were using hard-coded `gray.200` borders that remained light-gray in dark mode, causing poor contrast. They now use `{ base: 'gray.200', _dark: 'gray.700' }` so borders invert correctly with the colour scheme.
+- **`ColorField` native border** — replaced the hard-coded `var(--chakra-colors-gray-200)` CSS variable with `var(--chakra-colors-border)`, the Chakra v3 semantic border token that adapts automatically to dark/light mode.
+- **Array item index label** — the `#N` counter text inside array cards now uses `{ base: 'gray.600', _dark: 'gray.400' }` instead of the fixed `gray.600` that became illegible in dark mode.
+
+---
+
 ## [1.0.11] - 2026-04-13
 
 ### Fixed

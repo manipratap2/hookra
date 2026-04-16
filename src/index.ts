@@ -33,6 +33,13 @@ export type {
   ArrayFieldSchema,
   ObjectFieldSchema,
   CustomFieldSchema,
+  PinFieldSchema,
+  RatingFieldSchema,
+  EditableFieldSchema,
+  SegmentedFieldSchema,
+  TagsFieldSchema,
+  CheckboxCardFieldSchema,
+  RadioCardFieldSchema,
 
   // Form schema
   FormSchema,
@@ -95,5 +102,12 @@ export { HiddenField } from './components/fields/HiddenField'
 export { ArrayField } from './components/fields/ArrayField'
 export { ObjectField } from './components/fields/ObjectField'
 export { CustomField } from './components/fields/CustomField'
+export { PinField } from './components/fields/PinField'
+export { RatingField } from './components/fields/RatingField'
+export { EditableField } from './components/fields/EditableField'
+export { SegmentedField } from './components/fields/SegmentedField'
+export { TagsField } from './components/fields/TagsField'
+export { CheckboxCardField } from './components/fields/CheckboxCardField'
+export { RadioCardField } from './components/fields/RadioCardField'
 export { FieldRenderer } from './components/FieldRenderer'
 export { FieldWrapper } from './components/FieldWrapper'

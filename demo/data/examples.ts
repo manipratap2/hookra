@@ -1,6 +1,7 @@
 import type { FormSchema, FillFetcher } from 'hookra'
 
 // ─── Schema imports ──────────────────────────────────────────────────────────
+import { newChakraFieldsSchema } from '../schemas/newChakraFieldsSchema'
 import { simpleSchema } from '../schemas/simpleSchema'
 import { singleFieldSchema } from '../schemas/singleFieldSchema'
 import { defaultsSchema } from '../schemas/defaultsSchema'
@@ -160,8 +161,16 @@ export const allExamples: ExampleDef[] = [
     title: 'All Field Types',
     category: 'Field Types',
     description: 'Comprehensive showcase of every field type the library supports, organized by category.',
-    features: ['17+ field types', 'Text variants', 'Numeric', 'Choice', 'Toggle', 'Date/Time', 'File', 'Color', 'Slider'],
+    features: ['25+ field types', 'Text variants', 'Numeric', 'Choice', 'Toggle', 'Date/Time', 'File', 'Color', 'Slider', 'Cards', 'PIN', 'Rating', 'Tags'],
     schema: allFieldsSchema,
+  },
+  {
+    id: 'new-chakra-fields',
+    title: 'New Chakra Form Components',
+    category: 'Field Types',
+    description: 'All newly added Chakra UI form components: PIN input, star rating, inline editable, segmented control, tags input, radio cards, checkbox cards, Chakra Select, and the upgraded file upload with dropzone.',
+    features: ['pin', 'rating', 'editable', 'segmented', 'tags', 'radiocard', 'checkboxcard', 'select (chakra)', 'FileUpload dropzone'],
+    schema: newChakraFieldsSchema,
   },
 
   // ── Layout ─────────────────────────────────────────────────────────────────

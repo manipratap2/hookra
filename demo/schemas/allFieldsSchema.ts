@@ -24,6 +24,14 @@ export const allFieldsSchema: FormSchema = {
           showCount: true,
           width: 'full',
         },
+        {
+          name: 'editableField',
+          type: 'editable',
+          label: 'Editable (inline edit)',
+          defaultValue: 'Click the pencil icon to edit',
+          description: 'Click the edit button to modify inline',
+          width: 'full',
+        },
       ],
     },
     {
@@ -43,6 +51,14 @@ export const allFieldsSchema: FormSchema = {
           defaultValue: 42,
           width: 'full',
         },
+        {
+          name: 'ratingField',
+          type: 'rating',
+          label: 'Rating',
+          count: 5,
+          defaultValue: 3,
+          description: 'Star rating (1–5)',
+        },
       ],
     },
     {
@@ -52,11 +68,22 @@ export const allFieldsSchema: FormSchema = {
         {
           name: 'selectField',
           type: 'select',
-          label: 'Select (single)',
+          label: 'Select (native)',
           options: [
             { value: 'a', label: 'Option A' },
             { value: 'b', label: 'Option B' },
             { value: 'c', label: 'Option C', disabled: true },
+          ],
+        },
+        {
+          name: 'selectChakraField',
+          type: 'select',
+          label: 'Select (Chakra)',
+          variant: 'chakra',
+          options: [
+            { value: 'a', label: 'Option A' },
+            { value: 'b', label: 'Option B' },
+            { value: 'c', label: 'Option C' },
           ],
         },
         {
@@ -67,6 +94,16 @@ export const allFieldsSchema: FormSchema = {
             { value: 'x', label: 'Choice X' },
             { value: 'y', label: 'Choice Y' },
             { value: 'z', label: 'Choice Z' },
+          ],
+        },
+        {
+          name: 'segmentedField',
+          type: 'segmented',
+          label: 'Segmented Control',
+          options: [
+            { value: 'day', label: 'Day' },
+            { value: 'week', label: 'Week' },
+            { value: 'month', label: 'Month' },
           ],
         },
         {
@@ -99,6 +136,34 @@ export const allFieldsSchema: FormSchema = {
       ],
     },
     {
+      title: 'Card Selectors',
+      columns: 1,
+      fields: [
+        {
+          name: 'radiocardField',
+          type: 'radiocard',
+          label: 'Radio Cards',
+          options: [
+            { value: 'starter', label: 'Starter', description: 'Up to 5 users, 10 GB storage' },
+            { value: 'pro', label: 'Pro', description: 'Up to 50 users, 100 GB storage' },
+            { value: 'enterprise', label: 'Enterprise', description: 'Unlimited users and storage' },
+          ],
+          width: 'full',
+        },
+        {
+          name: 'checkboxcardField',
+          type: 'checkboxcard',
+          label: 'Checkbox Cards',
+          options: [
+            { value: 'analytics', label: 'Analytics', description: 'Track usage and performance' },
+            { value: 'notifications', label: 'Notifications', description: 'Email and push alerts' },
+            { value: 'integrations', label: 'Integrations', description: 'Connect third-party apps' },
+          ],
+          width: 'full',
+        },
+      ],
+    },
+    {
       title: 'Toggle Fields',
       columns: 2,
       fields: [
@@ -117,11 +182,45 @@ export const allFieldsSchema: FormSchema = {
       ],
     },
     {
-      title: 'Misc',
+      title: 'Special Inputs',
       columns: 2,
       fields: [
-        { name: 'colorField', type: 'color', label: 'Colour Picker', defaultValue: '#4299e1' },
-        { name: 'fileField', type: 'file', label: 'File Upload', accept: 'image/*', description: 'Images only' },
+        {
+          name: 'pinField',
+          type: 'pin',
+          label: 'PIN / OTP',
+          length: 6,
+          description: 'Enter a 6-digit code',
+        },
+        {
+          name: 'tagsField',
+          type: 'tags',
+          label: 'Tags',
+          placeholder: 'Add a tag…',
+          max: 5,
+          description: 'Press Enter to add a tag (max 5)',
+        },
+        { name: 'colorField', type: 'color', label: 'Colour Picker (native)', defaultValue: '#4299e1' },
+        {
+          name: 'colorChakraField',
+          type: 'color',
+          label: 'Colour Picker (Chakra)',
+          variant: 'chakra',
+          defaultValue: '#4299e1',
+        },
+      ],
+    },
+    {
+      title: 'File Upload',
+      columns: 1,
+      fields: [
+        {
+          name: 'fileField',
+          type: 'file',
+          label: 'File Upload',
+          accept: 'image/*',
+          description: 'Drop images here or click to browse',
+        },
       ],
     },
   ],

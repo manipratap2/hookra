@@ -4,10 +4,10 @@ import type { RegisterOptions } from 'react-hook-form'
 
 export type TextFieldType = 'text' | 'email' | 'password' | 'url' | 'tel' | 'search'
 export type NumericFieldType = 'number' | 'integer'
-export type ChoiceFieldType = 'select' | 'multiselect' | 'radio' | 'checkboxgroup'
+export type ChoiceFieldType = 'select' | 'multiselect' | 'radio' | 'checkboxgroup' | 'checkboxcard' | 'radiocard' | 'segmented'
 export type ToggleFieldType = 'boolean' | 'switch' | 'checkbox'
 export type TemporalFieldType = 'date' | 'time' | 'datetime'
-export type SpecialFieldType = 'textarea' | 'file' | 'color' | 'slider' | 'hidden'
+export type SpecialFieldType = 'textarea' | 'file' | 'color' | 'slider' | 'hidden' | 'pin' | 'rating' | 'editable' | 'tags'
 export type StructuralFieldType = 'array' | 'object'
 export type FieldType =
   | TextFieldType
@@ -216,6 +216,12 @@ export interface SelectFieldSchema extends BaseField {
   optionsFrom?: OptionsFrom
   /** Label for the blank/placeholder option (default "Select…") */
   placeholder?: string
+  /**
+   * Picker UI variant.
+   * - "native" (default): compact native <select> element
+   * - "chakra": full Chakra UI Select with searchable listbox
+   */
+  variant?: 'native' | 'chakra'
 }
 
 export interface MultiSelectFieldSchema extends BaseField {
@@ -276,6 +282,12 @@ export interface SliderFieldSchema extends BaseField {
 
 export interface ColorFieldSchema extends BaseField {
   type: 'color'
+  /**
+   * Picker UI variant.
+   * - "native" (default): compact browser color-input swatch + hex display
+   * - "chakra": full Chakra UI ColorPicker (area, hue/alpha sliders, hex input)
+   */
+  variant?: 'native' | 'chakra'
 }
 
 export interface HiddenFieldSchema extends BaseField {
@@ -321,6 +333,62 @@ export interface CustomFieldSchema extends BaseField {
   component?: string
 }
 
+export interface PinFieldSchema extends BaseField {
+  type: 'pin'
+  /** Number of PIN digits (default 4) */
+  length?: number
+  /** Mask the input characters like a password */
+  mask?: boolean
+  /** Allowed input type: "alphanumeric" | "numeric" | "alphabetic" (default "numeric") */
+  otp?: boolean
+}
+
+export interface RatingFieldSchema extends BaseField {
+  type: 'rating'
+  /** Maximum number of stars (default 5) */
+  count?: number
+  /** Allow half-star values */
+  allowHalf?: boolean
+}
+
+export interface EditableFieldSchema extends BaseField {
+  type: 'editable'
+  /** Textarea variant instead of single-line input */
+  multiline?: boolean
+  /** Placeholder for empty state preview */
+  placeholder?: string
+}
+
+export interface SegmentedFieldSchema extends BaseField {
+  type: 'segmented'
+  options?: FieldOption[]
+  optionsFrom?: OptionsFrom
+}
+
+export interface TagsFieldSchema extends BaseField {
+  type: 'tags'
+  /** Placeholder text for the tag input */
+  placeholder?: string
+  /** Maximum number of tags allowed */
+  max?: number
+  /** Whether to allow duplicate tag values */
+  allowDuplicates?: boolean
+}
+
+export interface CheckboxCardFieldSchema extends BaseField {
+  type: 'checkboxcard'
+  options?: FieldOption[]
+  optionsFrom?: OptionsFrom
+  direction?: 'row' | 'column'
+}
+
+export interface RadioCardFieldSchema extends BaseField {
+  type: 'radiocard'
+  options?: FieldOption[]
+  optionsFrom?: OptionsFrom
+  direction?: 'row' | 'column'
+}
+
 /** Discriminated union of all concrete field types */
 export type FieldSchema =
   | TextFieldSchema
@@ -339,6 +407,13 @@ export type FieldSchema =
   | ArrayFieldSchema
   | ObjectFieldSchema
   | CustomFieldSchema
+  | PinFieldSchema
+  | RatingFieldSchema
+  | EditableFieldSchema
+  | SegmentedFieldSchema
+  | TagsFieldSchema
+  | CheckboxCardFieldSchema
+  | RadioCardFieldSchema
 
 // ─── Section ──────────────────────────────────────────────────────────────────
 

@@ -23,6 +23,13 @@ import { HiddenField } from './fields/HiddenField'
 import { ArrayField } from './fields/ArrayField'
 import { ObjectField } from './fields/ObjectField'
 import { CustomField } from './fields/CustomField'
+import { PinField } from './fields/PinField'
+import { RatingField } from './fields/RatingField'
+import { EditableField } from './fields/EditableField'
+import { SegmentedField } from './fields/SegmentedField'
+import { TagsField } from './fields/TagsField'
+import { CheckboxCardField } from './fields/CheckboxCardField'
+import { RadioCardField } from './fields/RadioCardField'
 
 interface Props {
   field: FieldSchema
@@ -160,6 +167,27 @@ function renderField(
 
     case 'custom':
       return <CustomField field={field} name={name} readOnly={readOnly} />
+
+    case 'pin':
+      return <PinField field={field} name={name} readOnly={readOnly} />
+
+    case 'rating':
+      return <RatingField field={field} name={name} readOnly={readOnly} />
+
+    case 'editable':
+      return <EditableField field={field} name={name} readOnly={readOnly} />
+
+    case 'segmented':
+      return <SegmentedField field={field} name={name} readOnly={readOnly} />
+
+    case 'tags':
+      return <TagsField field={field} name={name} readOnly={readOnly} />
+
+    case 'checkboxcard':
+      return <CheckboxCardField field={field} name={name} readOnly={readOnly} />
+
+    case 'radiocard':
+      return <RadioCardField field={field} name={name} readOnly={readOnly} />
 
     default:
       return null

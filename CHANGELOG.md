@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.14] - 2026-04-16
+
+### Fixed
+
+- **Dark mode borders (re-applied)** — the `gray.200` → `{ base: 'gray.200', _dark: 'gray.700' }` fix for section boxes (`FormBuilder`), object group boxes (`ObjectField`), and array item cards (`ArrayField`), plus the array `#N` index counter contrast fix, were documented in the 1.0.12 changelog but were never actually committed to the tree (they remained in the working directory). This release commits those fixes so they land in the published package.
+- **`ColorField` — `variant: 'chakra'` implementation (re-applied)** — likewise, the `ColorFieldSchema.variant: 'chakra'` feature documented in the 1.0.12 changelog (full Chakra `ColorPicker` with gradient area, hue/alpha sliders, hex input) was never committed. This release commits the implementation so it is actually usable from the published package.
+- **`ColorField` native border token (re-applied)** — the `var(--chakra-colors-gray-200)` → `var(--chakra-colors-border)` swap for the native swatch's border, so it adapts automatically to dark/light mode.
+
+---
+
 ## [1.0.13] - 2026-04-16
 
 ### Added

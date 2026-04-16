@@ -52,7 +52,7 @@ export function ObjectField({ field, name, readOnly, columns = 1 }: Props) {
   if (!field.label && !field.description) return content
 
   return (
-    <Box borderWidth="1px" borderRadius="md" p="4" borderColor="gray.200">
+    <Box borderWidth="1px" borderRadius="md" p="4" borderColor={{ base: 'gray.200', _dark: 'gray.700' }}>
       {(field.label || field.description) && (
         <>
           <Box

@@ -114,7 +114,7 @@ function SectionBlock({ section, readOnly }: SectionProps) {
   if (!section.title && !section.description) return content
 
   return (
-    <Box borderWidth="1px" borderRadius="lg" p={{ base: "3", sm: "5" }} borderColor="gray.200">
+    <Box borderWidth="1px" borderRadius="lg" p={{ base: "3", sm: "5" }} borderColor={{ base: 'gray.200', _dark: 'gray.700' }}>
       {(section.title || section.description) && (
         <Box
           display="flex"

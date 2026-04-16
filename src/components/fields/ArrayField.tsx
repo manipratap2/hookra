@@ -178,12 +178,12 @@ export function ArrayField({ field, name, readOnly }: Props) {
           key={item.id}
           borderWidth="1px"
           borderRadius="md"
-          borderColor="gray.200"
+          borderColor={{ base: 'gray.200', _dark: 'gray.700' }}
           p="3"
           position="relative"
         >
           <HStack justify="space-between" mb="2">
-            <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+            <Text fontSize="sm" fontWeight="semibold" color={{ base: 'gray.600', _dark: 'gray.400' }}>
               #{index + 1}
             </Text>
             {!isDisabledOrReadOnly && (

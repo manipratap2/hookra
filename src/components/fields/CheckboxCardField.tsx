@@ -43,6 +43,7 @@ export function CheckboxCardField({ field, name, readOnly }: Props) {
               return (
                 <CheckboxCard.Root
                   key={String(opt.value)}
+                  ids={{ hiddenInput: `${name}-cb-${String(opt.value)}` }}
                   checked={isChecked}
                   onCheckedChange={() => toggle(String(opt.value))}
                   disabled={isDisabled}

@@ -56,6 +56,7 @@ export function MultiSelectField({ field, name, readOnly }: Props) {
             {options.map((opt) => (
               <Checkbox.Root
                 key={String(opt.value)}
+                ids={{ hiddenInput: `${name}-cb-${String(opt.value)}` }}
                 checked={selected.includes(String(opt.value))}
                 onCheckedChange={() => toggle(String(opt.value))}
                 disabled={field.disabled || opt.disabled || readOnly || field.readOnly}

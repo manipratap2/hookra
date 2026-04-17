@@ -22,7 +22,7 @@ export function PinField({ field, name, readOnly }: Props) {
       render={({ field: { value, onChange, onBlur } }) => (
         <PinInput.Root
           id={name}
-          value={String(value ?? '').split('')}
+          value={Array.from({ length }, (_, i) => String(value ?? '')[i] ?? '')}
           onValueChange={(details) => onChange(details.value.join(''))}
           onValueComplete={(details) => onChange(details.value.join(''))}
           onBlur={onBlur}

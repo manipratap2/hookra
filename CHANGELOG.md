@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.15] - 2026-04-17
+
+### Fixed
+
+- **`checkboxgroup` / `multiselect` / `checkboxcard` — only first option selectable** — all `Checkbox.Root` instances rendered inside a `Field.Root` (Chakra/Ark UI) inherited the same `ids.hiddenInput` from the enclosing field context, causing every checkbox label's `htmlFor` to point to the same hidden input. Clicking any option therefore always fired on the first input in the DOM. Fixed by passing a unique `ids.hiddenInput` (`${name}-cb-${optValue}`) to each `Checkbox.Root` / `CheckboxCard.Root` so labels resolve to the correct input.
+
+- **`pin` / `otp` field — slots beyond the first showing "undefined"** — the value passed to `PinInput.Root` was constructed with `String(value).split('')`, producing a shorter array than `length`. When `syncInputElements` ran after any state change, it called `setInputValue(input, undefined)` for out-of-range slots, which the browser serialised to the string `"undefined"`. Fixed by always passing a padded array of exactly `length` empty strings: `Array.from({ length }, (_, i) => String(value ?? '')[i] ?? '')`.
+
+---
+
 ## [1.0.14] - 2026-04-16
 
 ### Fixed

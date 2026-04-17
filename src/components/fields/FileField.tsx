@@ -32,6 +32,10 @@ export function FileField({ field, name, readOnly }: Props) {
     ...rules,
     validate: {
       ...(rules.validate as object | undefined),
+      required: (files: File[]) => {
+        if (!rules.required) return true
+        return (files?.length > 0) || (typeof rules.required === 'string' ? rules.required : 'This field is required')
+      },
       ...(field.maxSize !== undefined
         ? {
             maxSize: (files: File[]) => {
@@ -44,22 +48,26 @@ export function FileField({ field, name, readOnly }: Props) {
     },
   }
 
+  const { required: _required, ...rulesWithoutRequired } = validatedRules
+  const finalRules = { ...rulesWithoutRequired, validate: validatedRules.validate }
+
   return (
     <Controller
       control={control}
       name={name}
-      rules={validatedRules}
+      rules={finalRules}
       defaultValue={[]}
       render={({ field: { onChange } }) => (
         <FileUpload.Root
           onFileChange={(details) => onChange(details.acceptedFiles)}
           accept={field.accept ? field.accept.split(',').map((s) => s.trim()) : undefined}
           maxFiles={field.multiple ? undefined : 1}
+          maxFileSize={field.maxSize}
           disabled={isDisabled}
           width="100%"
           {...field.props}
         >
-          <FileUpload.HiddenInput id={name} />
+          <FileUpload.HiddenInput />
           <FileUpload.Dropzone>
             <FileUpload.DropzoneContent>
               <Icon color="fg.muted" boxSize="6">

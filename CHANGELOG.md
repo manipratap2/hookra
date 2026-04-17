@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.16] - 2026-04-17
+
+### Fixed
+
+- **`file` field — clicking "browse" or the dropzone did nothing** — `<FileUpload.HiddenInput id={name} />` was overriding the machine-generated id on the hidden `<input type="file">`. The Zag.js state machine locates its hidden input by its own internal id (`file:{machineId}:input`) to programmatically call `.click()` when the trigger fires. Our override meant the machine looked up a DOM element that did not exist, so file selection never opened. Fixed by removing the manual `id` prop and letting the machine own its input id.
+
+- **`file` field — `required` validation never triggered** — React Hook Form's built-in `required` check tests for a falsy value, but the `defaultValue` for file fields is `[]` (an empty array), which is truthy. A required file field therefore always passed validation even with no file selected. Fixed by moving required checking into a custom `validate` function that explicitly checks `files.length > 0`.
+
+- **`file` field — oversized files still appeared in the list** — `maxSize` was only validated after submission via a custom RHF rule, but the Zag.js dropzone accepted and displayed the file anyway. Fixed by also passing `maxFileSize` to `FileUpload.Root` so the machine rejects oversized files immediately at the dropzone level.
+
+---
+
 ## [1.0.15] - 2026-04-17
 
 ### Fixed

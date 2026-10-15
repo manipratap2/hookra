@@ -37,6 +37,12 @@ const staticNavigation: NavGroup[] = [
       { id: 'custom', to: '/get-started/$section', params: { section: 'custom' }, label: 'Custom Components' },
     ],
   },
+  {
+    title: 'Playground',
+    items: [
+      { id: 'playground', to: '/playground', label: 'Interactive Playground', isNew: true },
+    ],
+  },
 ]
 
 const exampleNavGroups: NavGroup[] = exampleCategories.map((cat) => ({
@@ -64,7 +70,12 @@ const apiNavigation: NavGroup = {
 
 const navigation: NavGroup[] = [
   ...staticNavigation,
-  { title: 'Examples', items: [{ id: 'ex-all', to: '/examples', label: 'All Examples' }] },
+  {
+    title: 'Examples',
+    items: [
+      { id: 'ex-all', to: '/examples', label: 'All Examples' },
+    ],
+  },
   ...exampleNavGroups,
   apiNavigation,
 ]
@@ -73,7 +84,9 @@ export function Sidebar() {
   const { colorMode } = useColorMode()
   const routerState = useRouterState()
   const currentPath = routerState.location.pathname
-  const currentSection = (routerState.location.search as Record<string, string>).section
+  const currentSection = (
+    routerState.location.search as Record<string, string>
+  ).section
   const currentHash = routerState.location.hash
 
   const bg = colorMode === 'dark' ? 'gray.800' : 'white'
@@ -101,7 +114,10 @@ export function Sidebar() {
       display={{ base: 'none', lg: 'block' }}
       css={{
         '&::-webkit-scrollbar': { width: '4px' },
-        '&::-webkit-scrollbar-thumb': { background: 'var(--chakra-colors-gray-300)', borderRadius: '4px' },
+        '&::-webkit-scrollbar-thumb': {
+          background: 'var(--chakra-colors-gray-300)',
+          borderRadius: '4px',
+        },
       }}
     >
       <VStack gap="6" align="stretch">
@@ -124,11 +140,17 @@ export function Sidebar() {
             >
               {group.title}
             </Text>
+
             <VStack gap="0.5" align="stretch">
               {group.items.map((item) => {
                 const resolvedPath = item.params
-                  ? Object.entries(item.params).reduce((path, [key, val]) => path.replace(`$${key}`, val), item.to)
+                  ? Object.entries(item.params).reduce(
+                      (path, [key, val]) =>
+                        path.replace(`$${key}`, val),
+                      item.to,
+                    )
                   : item.to
+
                 const isActive =
                   currentPath === resolvedPath &&
                   (item.hash
@@ -136,6 +158,7 @@ export function Sidebar() {
                     : item.search?.section
                       ? currentSection === item.search.section
                       : !currentSection && !currentHash)
+
                 return (
                   <Link
                     key={item.id}
@@ -162,8 +185,13 @@ export function Sidebar() {
                       w="100%"
                     >
                       {item.label}
+
                       {item.isNew && (
-                        <Badge colorPalette="green" fontSize="2xs" variant="subtle">
+                        <Badge
+                          colorPalette="green"
+                          fontSize="2xs"
+                          variant="subtle"
+                        >
                           New
                         </Badge>
                       )}
